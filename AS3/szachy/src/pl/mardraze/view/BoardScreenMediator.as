@@ -48,6 +48,7 @@ package pl.mardraze.view
          */
         override public function handleNotification( note:INotification ):void 
         {
+			super.handleNotification(note);
             switch ( note.getName() ) 
 			{
 				case StartupMonitorProxy.LOADING_STEP:
@@ -99,6 +100,7 @@ package pl.mardraze.view
 			var startupMonitorProxy:StartupMonitorProxy = facade.retrieveProxy( StartupMonitorProxy.NAME ) as StartupMonitorProxy;
 			startupMonitorProxy.loadResources();
 		}
+		
 		
     }
 }

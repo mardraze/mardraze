@@ -15,6 +15,7 @@ package pl.mardraze.view.components
 	{
 		
 		public static const EFFECT_END:String = 'BoardScreenEffectEnd';
+		public static const START:String = 'BoardScreenStart';
 		
 		private var fields:Array;
 		
@@ -24,9 +25,9 @@ package pl.mardraze.view.components
 		
 		public function BoardScreen() 
 		{
-			//this.visible = false;
+			this.visible = false;
 			addFields();
-			addFigure();
+			addFigures();
 		}
 		
 		private function addFields():void {

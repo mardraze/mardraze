@@ -43,6 +43,7 @@ package pl.mardraze.view
 
         override public function handleNotification( note:INotification ):void 
         {
+			super.handleNotification(note);
             switch ( note.getName() ) 
 			{
 				case ApplicationFacade.VIEW_SPLASH_SCREEN:
@@ -53,11 +54,14 @@ package pl.mardraze.view
 					app.session.selectedIndex = MAIN_SCREEN;
 					break;
             }
+			
+			
         }
 
         protected function get app():Game
 		{
-            return viewComponent as Game
+            return viewComponent as Game;
         }
+		
     }
 }

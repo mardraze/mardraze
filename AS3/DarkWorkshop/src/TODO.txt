@@ -1,0 +1,100 @@
+2013-06-28 00:53:54 :: Filip
+jestes moze?
+
+2013-06-28 00:54:05 :: Filip
+Mam dla Ciebie zadanko w AS3
+
+2013-06-28 00:54:32 :: Filip
+napisac klase TimeScheduleConfig
+
+2013-06-28 00:57:42 :: Filip
+wg formatu cron'a
+
+2013-06-28 00:58:26 :: Filip
+właściwości publiczne:
+
+2013-06-28 00:59:58 :: Filip
+- dweek:int
+- month:int
+- day:int
+- hour:int
+- min:int
+
+2013-06-28 01:00:09 :: Filip
+metody publiczne:
+
+2013-06-28 01:20:27 :: Filip
+getDiff(timestamp:Number):Number
+- timestamp w milisekundach
+- zwraca liczbę milisekund do następnego, najbliższego punktu schedulera 
+- wartość +XXXX gdy timestamp jest przed najbliższym punktem lub -XXXXX gdy jest po tym punkcie, XXXX to wartość różnicy czasu od punktu do timestamp
+
+2013-06-28 01:23:30 :: Filip
+do tego zrób proszę TimeScheduleConfigTest z Unit testem
+
+2013-06-28 01:23:34 :: Filip
+uzyj: http://www.flexunit.org/
+
+2013-06-28 01:24:52 :: Filip
+unit test tip:
+
+var unitTest:FlexUnitCore = new FlexUnitCore();
+unitTest.addListener(new TraceListener());
+unitTest.runClasses(TimeScheduleConfig);
+
+2013-06-28 01:25:08 :: Filip
+klasę umieść w package:
+
+2013-06-28 01:27:17 :: Filip
+com.darkenjin.utils
+
+2013-06-28 01:27:24 :: Filip
+test umiesc w:
+
+2013-06-28 01:48:56 :: Filip
+...ehh pomylilo mi sie
+
+2013-06-28 01:49:03 :: Filip
+unitTest.runClasses(TimeScheduleConfigTest);
+
+2013-06-28 01:49:44 :: Filip
+package test.cases.TimeScheduleConfigTest
+
+2013-06-28 01:50:07 :: Filip
+i jeszcze plik do odpalania testów:
+
+2013-06-28 01:50:36 :: Filip
+package test.Main.as
+
+2013-06-28 01:50:47 :: Filip
+znaczy plik Main.as
+
+2013-06-28 01:50:49 :: Filip
+:)
+
+2013-06-28 01:50:58 :: Filip
+ok ma to wygladac tak:
+
+2013-06-28 02:01:25 :: Filip
+/com/darkenjin/utils/TimeScheduleConfig.as
+/tests/src/Main.as
+/tests/src/tests/TimeScheduleConfigTest.as
+/tests/TimeScheduleTest.as3proj
+
+2013-06-28 02:01:41 :: Filip
+...daj znaka zebym ci pokazał jak skonfigurowac projekt w FDT
+
+2013-06-28 02:07:45 :: Filip
+ehhh chyba nie utility
+
+2013-06-28 02:07:54 :: Filip
+bo w sumei to powinny byc statyczne tylko klasy :)
+
+2013-06-28 02:20:38 :: Filip
+/com/darkenjin/types/TimeSchedule.as
+/tests/src/Main.as
+/tests/src/tests/TimeScheduleTest.as
+/tests/TimeScheduleTest.as3proj
+
+2013-06-28 02:20:42 :: Filip
+ostatecznie

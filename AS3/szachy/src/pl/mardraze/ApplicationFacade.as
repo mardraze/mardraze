@@ -23,7 +23,6 @@ package pl.mardraze
 		public static const VIEW_SPLASH_SCREEN:String		= "viewSplashScreen";
 		public static const VIEW_MAIN_SCREEN:String			= "viewMainScreen";
 		
-
         /**
          * Singleton ApplicationFacade Factory Method
          */
@@ -49,6 +48,8 @@ package pl.mardraze
 		{
 			sendNotification( STARTUP, app );
 		}
+		
+		
 		
     }
 }

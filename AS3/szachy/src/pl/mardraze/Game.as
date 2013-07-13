@@ -27,9 +27,10 @@ package pl.mardraze
 			addChild(_boardScreen);
 			addChild(_mainScreen);
 			
-			this.session = new Object();
+			session = new Object();
 			ApplicationFacade.getInstance().startup(this);
-
+			session.selectedIndex = 0;
+			
 		}
 		
 		public function get boardScreen():BoardScreen {
