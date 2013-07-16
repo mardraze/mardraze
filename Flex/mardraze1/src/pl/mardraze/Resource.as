@@ -10,5 +10,8 @@ package pl.mardraze
 
 		public static var images:Images = new Images();
 		
+		
+		
+		
 	}
 }

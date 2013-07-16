@@ -22,7 +22,12 @@ package pl.mardraze.view.view2D
 		public function Figure2D(type:uint = 0, color:uint = 0):void
 		{
 			if (Chess.isValidType(type)) {
-				_bitmap = Resource.images['figure' + type];
+				try {
+					_bitmap = Resource.images.figure['figure' + type+'_obj'];	
+				}catch (e:Error) {
+					trace(e.message);
+				}
+				
 				canMoveCallback = Chess.getCanMoveCallbackByType(type);
 			}
 
