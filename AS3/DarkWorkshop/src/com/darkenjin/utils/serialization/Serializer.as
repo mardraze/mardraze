@@ -2,204 +2,148 @@ package com.darkenjin.utils.serialization
 {
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
+	
 	/**
 	 * ...
 	 * @author Marcin Drazek
 	 */
-	public class Serializer 
+	public class Serializer extends AbstractSerializable
 	{
 		
-		private var _serializableObject:SerializableObject;
-		private var _definitions:Array;
-		private var _objectToRef:Dictionary;
-		private var _refs:Object;
-
-		private static var PRIMITIVE_TYPES:Array = ['Number','int','uint','Boolean','String']; //passed by value
-		
+		private var _allObjects:Array;
+		private var _serializedObject:SerializedObject;
+		private var _input:*;
+		private var _external:*;
+		private var _objectToArrayIndex:Dictionary;
 		private var _counter:uint;
 		
 		public function Serializer() 
 		{
-			_definitions = new Array();
-			_objectToRef = new Dictionary();
-			_refs = new Object();
-			_serializableObject = new SerializableObject();
-			_counter = 1;
+			_allObjects = new Array();
+			_serializedObject = new SerializedObject();
+			_objectToArrayIndex = new Dictionary();
+			_counter = 0;
 		}
 		
-		public function findDefinitions(value:*):void {
-			try {
-				var className:String = getNameClass(value);
-				if (value is Array) {
-					trace('value: ', className, JSON.stringify(value as Array));
-				}
-				
-				if (value != null && isPassedByRef(className)) {
-					if (!_objectToRef[value]) {
-						_definitions[_counter] = new SerializableItem(className, properties);
-						_objectToRef[value] = _counter;
-						_counter++;
-					}
-
-					if (value is Array) {
-						for (var key:* in value as Array) {
-							try {
-								findDefinitions(value[key]);
-							}catch (e1:Error) {
-								trace(e1.message);
-							}
-						}
-					}else {
-						var properties:Object = getObjectProperties(value as Object);
-						var once:int = 0;
-						for (var property:* in properties) {
-							findDefinitions(value[property]);
-						}
-					}
-				}else {
-				}
-			}catch (e:Error) {
-				trace(e.message);
-			}
+		public function serialize(input:*, external:* = null):void {
+			_input = input;
+			_external = external;
+			doSerialize();
+			_serializedObject.allObjects = _allObjects;
 		}
 		
-		public function serialize(value:*):void {
-			trace(JSON.stringify(_definitions));
-			var byValResult:* = serializeValue(_refs, value);
-			if (byValResult != null) {
-				_refs = byValResult;
-			}
-			
-			trace(JSON.stringify(_refs));
+		private function doSerialize():void {
+			addObjectToArray(_input);
+			updateRefs();
 		}
 		
-		private function serializeValue(output:*, value:*):* {
-			
-			if (_objectToRef[value]) {
-				var refId:uint = _objectToRef[value];
-				
-				try {
-					output.__refId = refId;
-					output.__className = _definitions[refId][className];
-				}catch (e4:Error) {
-					trace('e4'+e4.message);
-				}
+		private function addObjectToArray(object:*):void {
+			var className:String = getNameClass(object);
+			if (isPassedByRef(object, className)) {
+				var properties:Object = getProperties(object as Object);
+				addToArrayIfNotExists(object as Object, properties, className);
+				addChildrenToArray(object as Object, properties);
 			}
-			
-			try {
-				var className:String = getNameClass(value);
-				var ClassDefinition:Class = getClassByName(className);
-				if (isPassedByRef(className)) {
-					if (value && value is Object) {
-						var byValResult:* = null;
-						if (value is Array) {
-							
-							for (var i:uint = 0; i < (value as Array).length; i++ ) {
-								try {
-									output[i] = new Object();
-									byValResult = serializeValue(output[i], value[i]);
-									if (byValResult != null) {
-										output[i] = byValResult;
-									}
-								}catch (e3:Error) {
-									trace('e3'+e3.message);
-								}
-							}
-							
-						}else {
-							var properties:Object = getObjectProperties(value as Object);
-							for(var property:String in properties) {
-								try {
-									output[property] = new Object();
-									byValResult = serializeValue(output[property], value[property]);
-									if (byValResult != undefined) {
-										output[property] = byValResult;
-									}
-									
-								}catch (e3:Error) {
-									trace('e3'+e3.message+' '+JSON.stringify(value));
-								}
-							}
-						}
-					}
-				}else {
-					return value as ClassDefinition;
-				}
-			}catch (e:Error) {
-				trace('e' + e.message);
-			}
-			return null;
 		}
 
-		private function isPassedByRef(value:*):Boolean {
-			return PRIMITIVE_TYPES.indexOf(value) == -1;
-		}
-		private function getObjectProperties( o:Object ):Object {
-			var properties:Object = new Object();
+		private function getProperties( o:Object ):Object {
 			var classInfo:XML = describeType( o );
 			if ( classInfo.@name.toString() == "Object" ) {
-				var value:Object;
-				for ( var key:String in o ){
-					value = o[ key ];
-					if ( !(value is Function) ) {
-						try {
-							properties[key] = null;
-						}catch (e3:Error) {
-							trace('e3'+e3.message);
-						}
-					}
-				}
+				return getObjectProperties(o, classInfo);
 			} else {
-				for each ( var v:XML in classInfo..*.(name() == "variable" || ( name() == "accessor"
-						&& attribute( "access" ).charAt( 0 ) == "r" ) ) )
-				{
-					if ( v.metadata && v.metadata.( @name == "Transient" ).length() > 0 )
-						continue;
-					try {
-						properties[v.@name.toString()] = null;
-					}catch (e2:Error) {
-						trace('e2'+e2.message);
-					}
-
-					
+				return getAdvancedObjectProperties(o, classInfo);
+			}
+		}
+		
+		private function getObjectProperties(o:Object, classInfo:XML):Object {
+			var properties:Object = new Object();
+			for (var key:String in o ){
+				var property:* = o[ key ];
+				if ( !(property is Function) ) {
+					properties[key] = getPropertyValue(property);
 				}
 			}
 			return properties;
 		}
-		
-		
-		public function setExternal(external:*):void {
-			
+
+		private function getAdvancedObjectProperties(o:Object, classInfo:XML):Object {
+			var properties:Object = new Object();
+			for each ( var v:XML in classInfo..*.(name() == "variable" || ( name() == "accessor"
+					&& attribute( "access" ).charAt( 0 ) == "r" ) ) ) {
+				if ( v.metadata && v.metadata.( @name == "Transient" ).length() > 0 )
+					continue;
+				properties[v.@name.toString()] = getPropertyValue(o[ v.@name ]);
+			}
+			return properties;
 		}
 		
-		public function getObject():SerializableObject {
-			return _serializableObject;
+		private function getPropertyValue(property:*):* {
+			var className:String = getNameClass(property);
+			if (isPassedByRef(property, className)) {
+				var value:Object = new Object();
+				value.__refId = REFID_NEED_UPDATE;
+				value.tmpValue = property;
+				return value;
+			}else {
+				return property; //primitive
+			}			
 		}
 		
-    private static function getClassByName(className : String) : Class {
-        var c : Class;
-        c = getDefinitionByName(clearClassName(className))as Class;
-        return c;
-    }
-
-    private static function getNameClass(o:*):String{
-        return clearClassName(getQualifiedClassName(o));
-    }
-
-    private static function clearClassName(name:String):String{
-        if(name)
-            return name..split("::").join(".").replace("__AS3__.vec.","")
-        else{
-            return "Object"
-        }
-    }
-    private static function getClassByObject(o:*):Class{
-        return  getClassByName(getQualifiedClassName(o));
-    }
-
+		private function addToArrayIfNotExists(value:Object, properties:Object, className:String):void {
+			if (_objectToArrayIndex[value] === undefined) {
+				var obj:Object = new Object();
+				obj['className'] = className;
+				obj['properties'] = properties;
+				_allObjects[_counter] = obj;
+				_objectToArrayIndex[value] = _counter;
+				_counter++;
+			}
+		}
 		
+		private function addChildrenToArray(parent:Object, parentProperties:Object):void {
+			if (parent is Array) {
+				for (var key:* in parent as Array) {
+					addObjectToArray(parent[key]);
+				}
+			} else {
+				for (var property:* in parentProperties) {
+					addObjectToArray(parent[property]);
+				}
+			}
+		}
+		
+		private function updateRefs():void {
+			for (var object:Object in _allObjects) {
+				updateDefinitionRefs(_allObjects[object]);
+			}
+		}
+		
+		private function updateDefinitionRefs(object:Object):void {
+			for (var property:* in object.properties) {
+				if (object.properties[property] is Object && 'tmpValue' in object.properties[property]) {
+					var index:* = _objectToArrayIndex[object.properties[property].tmpValue];
+					if (index !== undefined) {
+						object.properties[property].tmpValue = null;
+						object.properties[property].__refId = uint(index);
+					}else {
+						debugObjectToArrayIndex(object.properties[property].tmpValue);
+					}
+					updateDefinitionRefs(object.properties[property]);
+				}
+			}
+		}
+		
+		private function debugObjectToArrayIndex(value:*):void {
+			trace('DOPASOWANIE JSONA: KLASA1 '+getNameClass(value)+' '+JSON.stringify(value));
+			for (var objectKey:* in _objectToArrayIndex) {
+				if (JSON.stringify(objectKey) == JSON.stringify(value)) {
+					trace('- ZNALEZIONO INDEX '+_objectToArrayIndex[objectKey]+' KLASA2 '+getNameClass(objectKey));
+				}
+			}
+		}
+		
+		public function getObject():Object {
+			return _serializedObject as Object;
+		}
 	}
-
 }
