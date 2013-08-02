@@ -1,0 +1,82 @@
+2013-08-02 23:25:32 [ERROR] D:\Test\cache_invalidation\lib\Server.php[17]: Call to undefined method Server::callMethodOfClass()
+2013-08-02 23:33:40 [ERROR] D:\Test\cache_invalidation\lib\Server.php[17]: Call to undefined method Server::callMethodOfClass()
+2013-08-02 23:34:14 [ERROR] D:\Test\cache_invalidation\lib\Response.php[79]: Class 'RestException' not found
+2013-08-02 23:37:34 [DEBUG] 
+2013-08-02 23:37:44 [DEBUG] 
+2013-08-02 23:41:24 [DEBUG] 
+2013-08-02 23:42:14 [DEBUG] 
+2013-08-02 23:43:04 [DEBUG] 
+2013-08-02 23:43:24 [DEBUG] 
+2013-08-02 23:46:03 [ERROR] Method executeDefault() not found
+2013-08-02 23:47:38 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-02 23:48:38 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-02 23:49:08 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-02 23:50:35 [ERROR] USAGE: /classname/method | Method executeSsss() not found
+2013-08-02 23:54:25 [ERROR] USAGE: /classname/method | Method executeSelect() not found
+2013-08-03 00:01:37 [ERROR] USAGE: /classname/method | Method executeSelect() not found
+2013-08-03 00:04:01 [ERROR] D:\Test\cache_invalidation\lib\RestRouting.php[23]: Call to undefined method Ksr::initRequest()
+2013-08-03 00:05:07 [DEBUG] 
+2013-08-03 00:06:57 [ERROR] D:\Test\cache_invalidation\lib\response\Ksr.php[14]: Class 'Server' not found
+2013-08-03 00:07:39 [ERROR] D:\Test\cache_invalidation\lib\response\Ksr.php[14]: Class 'Server' not found
+2013-08-03 00:08:57 [DEBUG] 
+2013-08-03 00:10:10 [DEBUG] 
+2013-08-03 00:17:48 [ERROR] D:\Test\cache_invalidation\lib\response\Ksr.php[9]: Call to a member function response() on a non-object
+2013-08-03 00:21:54 [DEBUG] okey
+2013-08-03 00:22:02 [DEBUG] okey
+2013-08-03 00:33:06 [ERROR] MEMCACHED PORT HAVE TO BE > 10000, PARAM: server["port"]
+2013-08-03 00:33:51 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\Server.php[9]: Class 'Cache' not found
+2013-08-03 00:43:19 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\Server.php[3]: require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'D:\Test\cache_invalidation\lib\response\ksr/server/Cache.php' (include_path='.;C:\Program Files (x86)\Zend\ZendServer\share\ZendFramework\library')
+2013-08-03 00:44:55 [DEBUG] okey
+2013-08-03 00:44:55 [ERROR] D:\Test\cache_invalidation\lib\RestRouting.php[23]: Undefined variable: uri
+2013-08-03 00:45:44 [DEBUG] okey
+2013-08-03 00:45:44 [ERROR] []: 
+2013-08-03 00:46:01 [DEBUG] okey
+2013-08-03 00:46:01 [ERROR] []: 
+2013-08-03 00:47:45 [DEBUG] okey
+2013-08-03 00:50:21 [ERROR] MEMCACHED PORT HAVE TO BE > 10000, PARAM: server["port"]
+2013-08-03 00:50:21 [ERROR] D:\Test\cache_invalidation\lib\response\Ksr.php[13]: Undefined index: server
+2013-08-03 00:50:39 [DEBUG] okey
+2013-08-03 00:50:48 [ERROR] Cache Could not connect
+2013-08-03 00:50:48 [ERROR] Could not connect
+2013-08-03 00:50:48 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11238, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-03 00:51:41 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11238
+2013-08-03 00:51:41 [ERROR] Could not connect to memcached at 127.0.0.1:11238
+2013-08-03 00:51:41 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11238, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-03 00:51:50 [DEBUG] okey
+2013-08-03 00:59:41 [ERROR] need server[id] param
+2013-08-03 00:59:41 [ERROR] D:\Test\cache_invalidation\lib\response\Ksr.php[13]: Undefined index: config
+2013-08-03 01:00:06 [ERROR] need server[id] param
+2013-08-03 01:00:06 [ERROR] D:\Test\cache_invalidation\lib\response\Ksr.php[13]: Undefined index: config
+2013-08-03 01:00:52 [DEBUG] okey
+2013-08-03 01:07:28 [DEBUG] created
+2013-08-03 01:09:10 [DEBUG] created
+2013-08-03 01:09:15 [ERROR] need server[id] param
+2013-08-03 01:09:15 [ERROR] D:\Test\cache_invalidation\lib\response\Ksr.php[9]: Uninitialized string offset: 0
+2013-08-03 01:10:12 [DEBUG] created
+2013-08-03 01:10:28 [DEBUG] created
+2013-08-03 01:11:55 [ERROR] D:\Test\cache_invalidation\lib\response\Ksr.php[20]: Call to undefined method Server::select()
+2013-08-03 01:13:52 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[3]: require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'Vector.class.php' (include_path='.;C:\Program Files (x86)\Zend\ZendServer\share\ZendFramework\library')
+2013-08-03 01:14:12 [DEBUG] 
+2013-08-03 01:16:47 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\Server.php[19]: Undefined index: where
+2013-08-03 01:17:30 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\Server.php[19]: Undefined index: where
+2013-08-03 01:17:53 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\Server.php[19]: Undefined index: where
+2013-08-03 01:17:55 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\Server.php[19]: Undefined index: where
+2013-08-03 01:25:25 [DEBUG] Array
+2013-08-03 01:25:25 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[12]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given
+2013-08-03 01:26:14 [DEBUG] Array
+2013-08-03 01:26:14 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[12]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given
+2013-08-03 01:30:13 [DEBUG] Array
+2013-08-03 01:30:13 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[12]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given
+2013-08-03 01:31:42 [DEBUG] Array
+2013-08-03 01:31:42 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[12]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given
+2013-08-03 01:32:15 [DEBUG] Array
+2013-08-03 01:32:15 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[12]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given
+2013-08-03 01:34:16 [DEBUG] Array
+2013-08-03 01:34:16 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[12]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given
+2013-08-03 01:38:54 [DEBUG] Array
+2013-08-03 01:38:54 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[12]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given
+2013-08-03 01:39:29 [DEBUG] Array
+2013-08-03 01:39:29 [ERROR] D:\Test\cache_invalidation\lib\response\ksr\server\CachedObject.php[12]: mysql_fetch_assoc() expects parameter 1 to be resource, boolean given
+2013-08-03 01:41:33 [DEBUG] Array
