@@ -2,19 +2,70 @@
 
 require_once 'Vector.php';
 require_once 'GenericObject.php';
-
+/**
+ * 
+ * @author Marcin
+ * CachedObject is used to retrieve data from the memcached
+ */
 class CachedObject extends GenericObject{
 	
+	private $cache;
+	
+	public function CachedObject(Cache $cache){
+		$this->cache = $cache;
+	}
+	
 	public function get($where, $fields = null) {
-		$query = 'SELECT '.($fields ? $fields : '*').' FROM '.$this->table.($where ? (' WHERE '.$where) : '');
-		$result = $this->execute($query);
-		$data = array();
-		while($row = mysql_fetch_assoc($result)){
-			$data[] = $row;
+		global $config;
+		$data = $this->getFromCache($where, $fields);
+		if(!$data){
+			$data = parent::get($where, $fields);
 		}
 		return $data;
 	}
+	
+	private function getFromCache($whereString, $fields = null){
+		$baseVector = new Vector();
+		$baseVector->properties = $this->parseWhere($whereString);
+		$vectors = $this->makeChildVectors($baseVector);
+		$bigRevision = $this->getBigRevision($vectors);
+		return $this->cache->get($this->table.$bigRevision);
+	}
+	
+	private function parseWhere($whereString){
+		global $config;
+		$cacheKeysFromWhere = array();
+		$cache_keys_of_table = @$config['cache_keys_of_table'][$table];
+		foreach (@$cache_keys_of_table as $index => $cache_key){
+			if(array_key_exists($cache_key, $where)){
+				
+			}
+		}		
+		return $cacheKeysFromWhere;
+	}
+	
+	private function makeBaseVector($where, $fields = null){
+		global $config;
+		
+		$cache_keys_of_table = @$config['cache_keys_of_table'][$table];
+		$baseVector = new Vector();
+		foreach (@$cache_keys_of_table as $index => $cache_key){
+			if(array_key_exists($cache_key, $where)){
+				
+			}
+		}
+		return $baseVector;
+	}
 
+	private function makeChildVectors(Vector $baseVector){
+		$childVectors = array();
+		return $childVectors;
+	}
+
+	private function getBigRevision($vectors){
+		
+	}
+	
 	public function delete($where) {
 		$query = 'DELETE FROM '.$this->table.($where ? (' WHERE '.$where) : '');
 		$this->execute($query);

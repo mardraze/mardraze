@@ -1,9 +1,9 @@
 <?php
 
-require_once (dirname(__FILE__)).'/ksr/Server.php';
+require_once dirname(__FILE__).'/ksr/Server.php';
 
 class Ksr extends Response{
-	
+
 	public function executeCreateServer(){
 		$serverConfig = @$_REQUEST['server'];
 		if($serverConfig['id']){
@@ -14,7 +14,7 @@ class Ksr extends Response{
 			throw new Exception('need server[id] param',Response::BADREQUEST);
 		}
 	}
-	
+
 	public function executeSelect(){
 		$server = $this->initServer();
 		$this->content = $server->select(@$_REQUEST['query']);
@@ -27,5 +27,5 @@ class Ksr extends Response{
 		}
 		return new Server($_SESSION['server_'.$id]);
 	}
-	
+
 }

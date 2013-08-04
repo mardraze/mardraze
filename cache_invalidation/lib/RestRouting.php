@@ -1,6 +1,6 @@
 <?php
-require dirname(__FILE__).'/../lib/Response.php';
-require dirname(__FILE__).'/../lib/Request.php';
+require dirname(__FILE__).'/Response.php';
+require dirname(__FILE__).'/Request.php';
 
 class RestRouting{
 

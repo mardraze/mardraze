@@ -1,4 +1,9 @@
 <?php
+/**
+ * 
+ * @author Marcin
+ * GenericObject is used to retrieve data from the database
+ */
 class GenericObject {
 
 	public $table;

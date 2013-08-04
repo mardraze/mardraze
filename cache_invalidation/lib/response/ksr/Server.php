@@ -14,7 +14,7 @@ class Server{
 	}
 	
 	public function select($query){
-		$cachedObject = new CachedObject();
+		$cachedObject = new CachedObject($this->cache);
 		$cachedObject->table = $query['table'];
 		return $cachedObject->get(@$query['where']);
 	}
