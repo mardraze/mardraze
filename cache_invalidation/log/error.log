@@ -98,3 +98,138 @@
 2013-08-04 14:47:01 [ERROR] USAGE: /classname/method | Method executeDefault() not found
 2013-08-04 14:47:13 [ERROR] need server[id] param
 2013-08-04 14:51:01 [ERROR] need server[id] param
+2013-08-07 23:10:55 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-07 23:12:47 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-07 23:12:59 [ERROR] server ID: not found
+2013-08-07 23:13:13 [ERROR] server ID: not found
+2013-08-07 23:14:15 [ERROR] GET[server] => "" not found
+2013-08-07 23:14:25 [ERROR] GET[server] => "11234" not found
+2013-08-07 23:14:40 [ERROR] GET[server] => "11234" not found
+2013-08-07 23:21:20 [ERROR] GET[port] => "" is wrong, may be > 10000
+2013-08-07 23:21:31 [ERROR] MEMCACHED PORT HAVE TO BE > 10000, PARAM: server["port"]
+2013-08-07 23:22:13 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-07 23:22:13 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-07 23:22:13 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-07 23:27:36 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-07 23:36:44 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-07 23:36:48 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-08 00:30:43 [ERROR] QUERY ERROR author_id=1 AND song_id=4
+2013-08-08 00:52:22 [ERROR] NO AND IN QUERY author_id = 1 AND song_id = 4
+2013-08-08 00:52:44 [ERROR] NO AND IN QUERY constauthor_id = 1 AND song_id = 4
+2013-08-08 01:00:17 [ERROR] NO AND IN QUERY  author_id = 1 AND song_id = 4
+2013-08-14 22:33:29 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-14 22:33:35 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-14 22:33:49 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-14 22:33:49 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-14 22:33:49 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-14 22:34:21 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-14 22:34:21 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-14 22:34:21 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Nie mo¿na nawi¹zaæ po³¹czenia, poniewa¿ komputer docelowy aktywnie go odmawia.
+ (10061)
+2013-08-14 22:41:15 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\CachedObject.php[45]: Invalid argument supplied for foreach()
+2013-08-14 22:44:47 [ERROR] GET[query] must be specified
+2013-08-14 22:48:14 [ERROR] GET[query] must be specified
+2013-08-14 22:48:36 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\SqlParser.php[13]: Variable passed to each() is not an array or object
+2013-08-14 22:53:55 [ERROR] USAGE: /classname/method | Method executeDefault() not found
+2013-08-14 22:58:01 [DEBUG] Array
+2013-08-14 22:58:57 [DEBUG] Array
+2013-08-14 22:59:46 [DEBUG] Array
+2013-08-14 23:15:57 [DEBUG] GET FROM DB
+2013-08-14 23:15:57 [DEBUG] Array
+2013-08-14 23:17:04 [DEBUG] GET FROM DB
+2013-08-14 23:17:04 [DEBUG] Array
+2013-08-14 23:23:15 [DEBUG] GET FROM DB
+2013-08-14 23:23:53 [DEBUG] GET FROM DB
+2013-08-14 23:23:53 [DEBUG] Array
+2013-08-14 23:23:57 [DEBUG] GET FROM CACHE
+2013-08-14 23:23:57 [DEBUG] Array
+2013-08-14 23:23:59 [DEBUG] GET FROM CACHE
+2013-08-14 23:23:59 [DEBUG] Array
+2013-08-14 23:25:58 [DEBUG] GET FROM CACHE
+2013-08-14 23:25:58 [DEBUG] MICROTIME: 0.110046
+2013-08-14 23:25:58 [DEBUG] Array
+2013-08-14 23:26:23 [DEBUG] GET FROM DB
+2013-08-14 23:26:23 [DEBUG] MICROTIME: 0.121888
+2013-08-14 23:26:23 [DEBUG] Array
+2013-08-14 23:26:59 [DEBUG] GET FROM CACHE
+2013-08-14 23:26:59 [DEBUG] MICROTIME: 0.106966
+2013-08-14 23:26:59 [DEBUG] Array
+2013-08-14 23:29:54 [DEBUG] MICROTIME: 0.091819
+2013-08-14 23:29:54 [DEBUG] Array
+2013-08-14 23:29:57 [DEBUG] MICROTIME: 0.091243
+2013-08-14 23:29:57 [DEBUG] Array
+2013-08-14 23:32:12 [DEBUG] GET FROM CACHE
+2013-08-14 23:32:12 [DEBUG] MICROTIME: 0.098565
+2013-08-14 23:32:12 [DEBUG] Array
+2013-08-14 23:43:46 [DEBUG] GET FROM CACHE
+2013-08-14 23:43:46 [DEBUG] MICROTIME: 0.11066
+2013-08-14 23:43:46 [DEBUG] Array
+2013-08-15 00:09:13 [DEBUG] GET FROM DB
+2013-08-15 00:09:13 [DEBUG] MICROTIME: 0.115732
+2013-08-15 00:09:13 [DEBUG] Array
+2013-08-15 00:10:35 [DEBUG] GET FROM CACHE
+2013-08-15 00:10:35 [DEBUG] MICROTIME: 0.098413
+2013-08-15 00:10:35 [DEBUG] Array
+2013-08-15 00:29:30 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:29:32 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:29:32 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:29:32 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Nie mo¿na nawi¹zaæ po³¹czenia, poniewa¿ komputer docelowy aktywnie go odmawia.
+ (10061)
+2013-08-15 00:30:11 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:30:13 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:30:13 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:30:13 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-15 00:33:11 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:33:12 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:33:12 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:33:12 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-15 00:34:46 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:34:47 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:34:47 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:34:47 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-15 00:36:08 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:36:09 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:36:09 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:36:09 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Nie mo¿na nawi¹zaæ po³¹czenia, poniewa¿ komputer docelowy aktywnie go odmawia.
+ (10061)
+2013-08-15 00:37:02 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:37:04 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:37:04 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:37:04 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-15 00:39:27 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:39:27 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:39:27 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[12]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-15 00:40:04 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:40:04 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-15 00:40:04 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Nie mo¿na nawi¹zaæ po³¹czenia, poniewa¿ komputer docelowy aktywnie go odmawia.
+ (10061)
+2013-08-15 00:40:13 [DEBUG] GET FROM DB
+2013-08-15 00:40:13 [DEBUG] MICROTIME: 0.129511
+2013-08-15 00:40:13 [DEBUG] Array
+2013-08-15 00:48:53 [DEBUG] GET FROM CACHE
+2013-08-15 00:48:53 [DEBUG] MICROTIME: 0.10869
+2013-08-15 00:48:53 [DEBUG] Array
+2013-08-15 00:49:52 [DEBUG] GET FROM CACHE
+2013-08-15 00:49:52 [DEBUG] MICROTIME: 0.095193
+2013-08-15 00:49:52 [DEBUG] Array
+2013-08-15 00:50:10 [DEBUG] GET FROM CACHE
+2013-08-15 00:50:10 [DEBUG] MICROTIME: 0.105117
+2013-08-15 00:50:10 [DEBUG] Array
+2013-08-22 00:02:01 [ERROR] GET[query][set] must be specified
+2013-08-22 00:03:22 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-22 00:03:22 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-22 00:03:22 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-22 00:05:01 [DEBUG] GET FROM DB
+2013-08-22 00:05:01 [DEBUG] MICROTIME: 0.1926
+2013-08-22 00:05:01 [DEBUG] Array
+2013-08-22 00:07:04 [DEBUG] GET FROM CACHE
+2013-08-22 00:07:04 [DEBUG] MICROTIME: 0.069811
+2013-08-22 00:07:04 [DEBUG] Array

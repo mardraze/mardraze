@@ -23,6 +23,6 @@ function phpError() {
 }
 
 error_reporting(E_ALL);
-ini_set( "display_errors", "off" );
+ini_set( "display_errors", "on" );
 register_shutdown_function('phpError');
 set_exception_handler("catchException");

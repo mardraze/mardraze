@@ -34,3 +34,5 @@ który implikuje pozostałe trzy i w efekcie mamy:
 Wykonujemy zapytanie, po czym zwiększamy rewizję każdego wektora
 UPDATE = DELETE + INSERT
 
+http://localhost/mardraze/cache_invalidation/web/ksr/select?port=11234&query[table]=songs&query[where]=author_id=3
+http://localhost/mardraze/cache_invalidation/web/ksr/update?port=11234&query[table]=songs&query[set][author_id]=2&query[where]=author_id=3
