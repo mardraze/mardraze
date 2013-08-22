@@ -26,6 +26,7 @@ class GenericObject {
 	public function delete($where) {
 		$query = 'DELETE FROM '.$this->table.($where ? (' WHERE '.$where) : '');
 		$this->execute($query);
+		return mysql_affected_rows();
 	}
 
 
@@ -44,8 +45,9 @@ class GenericObject {
 		foreach($data as $k => $v){
 			$set[] = '`'.$k.'`="'.$v.'"';
 		}
-		$query = 'UPDATE '.$this->table.' SET '.implode(',', $set).' WHERE '.$where;
+		$query = 'UPDATE '.$this->table.' SET '.implode(',', $set).($where ? (' WHERE '.$where) : '');
 		$this->execute($query);
+		return mysql_affected_rows();
 	}
 	
 	protected function execute($query){

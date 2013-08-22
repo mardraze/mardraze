@@ -22,7 +22,11 @@ class Cache {
 	
 	public function inc($keys){
 		foreach ($keys as $k => $v){
-			return $this->memcache->increment($v.'');
+			$key = $v.'';
+			$exists = $this->memcache->increment($key);
+			if($exists === false){
+				$value = $this->memcache->set($key, 0);
+			}
 		}
 	}
 	
