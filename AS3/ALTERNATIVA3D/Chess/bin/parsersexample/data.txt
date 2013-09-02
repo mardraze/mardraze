@@ -1,0 +1,1 @@
+{"mesh":{"x":-210.6,"y":-212,"z":62,"scaleX":10,"scaleY":10,"scaleZ":10},"pawnDistance":60.4,"camera":{"x":0,"y":-600,"z":200,"rotationX":-90,"rotationY":0,"rotationZ":0}}

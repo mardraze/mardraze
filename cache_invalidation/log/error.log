@@ -456,3 +456,11 @@
 2013-08-22 02:24:02 [DEBUG] Array
 2013-08-22 02:24:18 [DEBUG] Array
 2013-08-22 02:25:17 [DEBUG] Array
+2013-08-22 20:31:41 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-22 20:31:41 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-22 20:31:41 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)
+2013-08-22 22:22:55 [ERROR] Cache Could not connect to memcached at 127.0.0.1:11234
+2013-08-22 22:22:55 [ERROR] Could not connect to memcached at 127.0.0.1:11234
+2013-08-22 22:22:55 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\Cache.php[11]: Memcache::connect() [<a href='memcache.connect'>memcache.connect</a>]: Can't connect to 127.0.0.1:11234, Próba po³¹czenia nie powiod³a siê, poniewa¿ po³¹czona strona nie odpowiedzia³a poprawnie po ustalonym okresie czasu lub utworzone po³¹czenie nie powiod³o siê, poniewa¿ po³¹czony host nie odpowiedzia³.
+ (10060)

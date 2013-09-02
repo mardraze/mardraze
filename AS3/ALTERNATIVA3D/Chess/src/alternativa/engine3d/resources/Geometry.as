@@ -377,13 +377,15 @@ package alternativa.engine3d.resources {
 
 				var acu:Number = cu - au;
 				var acv:Number = cv - av;
-
-				var r:Number = 1/(abu*acv - acu*abv);
+				var r1:Number = (abu * acv - acu * abv);
+				var r:Number = 1;
+				if (r1 != 0) {
+					r = 1 / r1;
+				}
 
 				var tangentX:Number = r*(acv*abx - acx*abv);
 				var tangentY:Number = r*(acv*aby - abv*acy);
 				var tangentZ:Number = r*(acv*abz - abv*acz);
-
 				tangent = tangents[vertIndexA];
 
 				if (tangent == null) {

@@ -73,8 +73,6 @@ class Response
 	}
 
 	public function getResult(){
-		if($this->status == self::OK) Logger::debug($this->content);
-		else Logger::error($this->content);
 		return array('status' => $this->status, 'content' => $this->content);
 	}
 }

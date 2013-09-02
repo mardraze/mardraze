@@ -74,7 +74,7 @@
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\mouseeventsexample\MouseEventsExample.as" />
+    <compile path="src\mouseeventsexample\Game.as" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
@@ -83,7 +83,7 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False" />
+  <postBuildCommand alwaysRun="False">D:\DarkWorkshop\trunk\darkenage\game\engine\engine\killallflashplayers.bat</postBuildCommand>
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />

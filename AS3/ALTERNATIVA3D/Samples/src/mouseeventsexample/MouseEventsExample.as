@@ -44,6 +44,24 @@ package mouseeventsexample {
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
+			addCamera();
+			
+			// Objects
+			// Создание объектов
+			var box:Mesh = new Box();
+			box.name = "Box";
+			var texture:BitmapTextureResource = new BitmapTextureResource(new EmbedTexture().bitmapData);
+			var material:TextureMaterial = new TextureMaterial(texture);
+			box.setMaterialToAllSurfaces(material);
+			addBoxes(box);
+
+			stage3D = stage.stage3Ds[0];
+			stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreate);
+			stage3D.requestContext3D();
+		}
+
+		private function addCamera():void {
+			
 			// Camera and view
 			// Создание камеры и вьюпорта
 			camera = new Camera3D(1, 10000);
@@ -58,15 +76,9 @@ package mouseeventsexample {
 			camera.z = 1200;
 			controller = new SimpleObjectController(stage, camera, 200);
 			scene.addChild(camera);
-			
-			// Objects
-			// Создание объектов
-			var box:Mesh = new Box();
-			box.name = "Box";
-			var texture:BitmapTextureResource = new BitmapTextureResource(new EmbedTexture().bitmapData);
-			var material:TextureMaterial = new TextureMaterial(texture);
-			box.setMaterialToAllSurfaces(material);
-			
+		}
+		
+		private function addBoxes(box:Mesh):void {
 			var boxes:Object3D = new Object3D();
 			boxes.name = "Boxes";
 			boxes.rotationZ = -45*Math.PI/180;
@@ -81,17 +93,15 @@ package mouseeventsexample {
 				}
 			}
 			scene.addChild(boxes);
-			
+
 			// 3D mouse events
 			// Мышиные события в 3D
 			boxes.addEventListener(MouseEvent3D.MOUSE_OVER, onMouseOver);
 			boxes.addEventListener(MouseEvent3D.MOUSE_OUT, onMouseOut);
 			boxes.addEventListener(MouseEvent3D.CLICK, onClick);
 			
-			stage3D = stage.stage3Ds[0];
-			stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreate);
-			stage3D.requestContext3D();
 		}
+		
 		
 		private function onContextCreate(event:Event):void {
 			stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreate);
