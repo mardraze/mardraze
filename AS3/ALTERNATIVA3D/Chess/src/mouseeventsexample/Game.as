@@ -87,16 +87,30 @@ package mouseeventsexample {
 		private var positions:Array;
 		private var selected:Object;
 		private var currentPlayer:String;
+		private var pawnOmmitField:Object = {};
+		private var upgradePawnIndex:int = 0;
 
 		public function Game() {
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			camera = new Camera3D(1, 1000);
+			camera.view = new View(stage.stageWidth, stage.stageHeight, false, 0, 0, 4);
+			addChild(camera.view);
+			addChild(camera.diagram);
+			scene.addChild(camera);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
+				if (e.keyCode == 80) {
+					trace(camera.x, camera.y, camera.z,
+						camera.rotationX / (Math.PI / 180),
+						camera.rotationY / (Math.PI / 180), 
+						camera.rotationZ / (Math.PI/180));
+				}
+			});
+			initPositionArray();
+			loadBoard();
+
 			config = new Config();
 			config.ready(function():void {
-				stage.align = StageAlign.TOP_LEFT;
-				stage.scaleMode = StageScaleMode.NO_SCALE;
-				camera = new Camera3D(1, 1000);
-				camera.view = new View(stage.stageWidth, stage.stageHeight, false, 0, 0, 4);
-				addChild(camera.view);
-				addChild(camera.diagram);
 				if (tmpCameraX !== UNDEFINED) {
 					camera.x = tmpCameraX;
 					camera.y = tmpCameraY;
@@ -113,10 +127,6 @@ package mouseeventsexample {
 					camera.rotationZ = config.values.camera.rotationZ * Math.PI/180;
 				}
 				controller = new SimpleObjectController(stage, camera, 50);
-				initPositionArray();
-				scene.addChild(camera);
-				
-				loadBoard();
 				stage3D = stage.stage3Ds[0];
 				stage3D.addEventListener(Event.CONTEXT3D_CREATE, onContextCreate);
 				stage3D.requestContext3D();
@@ -131,57 +141,21 @@ package mouseeventsexample {
 		}
 		
 		private function addLight():void {
-			var omniLight:OmniLight = new OmniLight(0xf0f0ff, 50, 1000);
+			var omniLight:OmniLight = new OmniLight(0x666, 50, 1000);
 			omniLight.x = config.values.camera.x;
-			omniLight.y = config.values.camera.y+200;
-			omniLight.z = config.values.camera.z;
+			omniLight.y = config.values.camera.y+850;
+			omniLight.z = config.values.camera.z-200;
 			omniLight.intensity = 3;
 			var omniSphere:GeoSphere = new GeoSphere(10, 4, false, new FillMaterial(0xffffff));
 			omniLight.addChild(omniSphere);
 			scene.addChild(omniLight);
 			var dirLight:DirectionalLight = new DirectionalLight(0x909030);
-			dirLight.intensity = .5;
+			dirLight.intensity = .8;
 			dirLight.z = config.values.camera.z;
 			dirLight.lookAt(0, 0, 0);
 			scene.addChild(dirLight);
 			var ambientLight:AmbientLight = new AmbientLight(0x404040);
 			scene.addChild(ambientLight);
-			var sphere:Mesh = null;
-			var parser:ParserA3D = new ParserA3D();
-			parser.parse(new bumpClass());
-			for each (var obj:Object3D in parser.objects) {
-				if (obj.name == "Sphere") {
-					sphere = obj as Mesh;
-					break;
-				}
-			}
-			
-			var data:Object = {
-				"black" : [
-					[3, 7], 
-				], 
-				"white" : [
-					[3, 0], 
-				]
-			};
-
-			putFigures("King", sphere, data);
-			return;
-			sphere.geometry.addVertexStream([VertexAttributes.TEXCOORDS[0], VertexAttributes.TEXCOORDS[0]]);
-			sphere.geometry.calculateNormals();
-			sphere.geometry.calculateTangents(0);
-			
-			trace("boundBox", JSON.stringify(sphere.boundBox));
-			sphere.x = camera.x;
-			sphere.y = camera.y + 300;
-			sphere.z = camera.z - 100;
-			sphere.scaleX = 5;
-			sphere.scaleY = 5;
-			sphere.scaleZ = 5;
-			var btr:BitmapTextureResource = createColorTexture(0x00FF00);
-			var btr1:BitmapTextureResource = createColorTexture(0xFF0000);
-			sphere.setMaterialToAllSurfaces(new StandardMaterial(btr, btr1));
-			scene.addChild(sphere);
 		}
     public static function coloredStandardMaterial(color:int = 0x7F7F7F):StandardMaterial {
         var material:StandardMaterial;
@@ -203,38 +177,27 @@ package mouseeventsexample {
 			scene.addChild(box);
 		}
 				
-		private function move(x:int, y:int, clickedFigure:Mesh = null, color:String = null):void {
+		private function move(x:int, y:int):void {
 			//jesli zaznaczony i moze sie tutaj ruszyc
 				//jesli nie ma koloru - przejdz na pozycje
 				//jesli moj kolor - zmien selected
 				//jesli color przeciwnika - zbij, selected odznacz, zmien ture
 			//niezaznaczony
 				//jesli jest parametr figure i tura color to zaznacz
-			CONFIG::debug { trace('move 1'); }
+			CONFIG::debug { trace('move 1 '+JSON.stringify(positions[x][y])); }
 			if (canMoveSelected(x, y)) {
-				CONFIG::debug { trace('move 2'); }
-				if (color) {
-					CONFIG::debug { trace('move 3'); }
-					if (color === currentPlayer) {
-						CONFIG::debug { trace('move 4'); }
-						selected = { 
-							'x' : x,
-							'y' : y,
-							'figureName' : clickedFigure.name,
-							'type' : clickedFigure.name.substr(0, clickedFigure.name.search('_')),
-							'color' : color
-						};
-					} else {
-						CONFIG::debug { trace('move 5'); }
-						positions[selected.x][selected.y] = { 'figureName' : null, 'color' : null };
-						positions[x][y] = { 'figureName' : selected.figureName, 'color' : selected.color };
-						var figure1:Mesh = scene.getChildByName(selected.figureName) as Mesh;
-						figure1.x = config.values.mesh.x + config.values.pawnDistance * x;
-						figure1.y = config.values.mesh.y + config.values.pawnDistance * y;
-						clickedFigure.visible = false;
-						nextPlayer();
-					}
-				} else {
+				CONFIG::debug { trace('move 2'+JSON.stringify(positions[x][y])); }
+				if (isEnemyFigure(x, y)) {
+					var figure1:Mesh = scene.getChildByName(positions[x][y].figureName) as Mesh;
+					figure1.visible = false;
+					CONFIG::debug { trace('move 5'); }
+					positions[selected.x][selected.y] = { 'figureName' : null, 'color' : null };
+					positions[x][y] = { 'figureName' : selected.figureName, 'color' : selected.color };
+					var figure2:Mesh = scene.getChildByName(selected.figureName) as Mesh;
+					figure2.x = config.values.mesh.x + config.values.pawnDistance * x;
+					figure2.y = config.values.mesh.y + config.values.pawnDistance * y;
+					nextPlayer();
+				} else if(isEmptyField(x, y)) {
 					CONFIG::debug { trace('move 8'); }
 					positions[selected.x][selected.y] = { 'figureName' : null, 'color' : null };
 					positions[x][y] = { 'figureName' : selected.figureName, 'color' : selected.color };
@@ -243,21 +206,16 @@ package mouseeventsexample {
 					figure.y = config.values.mesh.y + config.values.pawnDistance * y;
 					nextPlayer();
 				}
-			}else if (clickedFigure && currentPlayer === color) {
-				CONFIG::debug { trace('move 9'); }
-				selected = { 
-					'x' : x,
-					'y' : y,
-					'figureName' : clickedFigure.name,
-					'type' : clickedFigure.name.substr(0, clickedFigure.name.search('_')),
-					'color' : color
-				};
 			}
 			CONFIG::debug { trace('move 10'); }
-
+		}
+		
+		private function isFrozen(x:int, y:int):Boolean {
+			return false;
 		}
 		
 		private function nextPlayer():void {
+
 			if (currentPlayer === BLACK) {
 				currentPlayer = WHITE;
 				CONFIG::debug { trace('move 6'); }
@@ -265,15 +223,83 @@ package mouseeventsexample {
 				currentPlayer = BLACK;
 				CONFIG::debug { trace('move 7'); }
 			}
+			
+			if (pawnOmmitField[currentPlayer]) {
+				cleanField(pawnOmmitField[currentPlayer].x, pawnOmmitField[currentPlayer].y)
+				pawnOmmitField[currentPlayer] = null;
+			}
+
 			selected = null;
 		}
 		
+		private function cleanField(x:int, y:int):void {
+			positions[x][y].figureName = null;
+			positions[x][y].color = null;
+		}
+		
 		private function canMoveSelected(x:int, y:int):Boolean {
+			//jezeli nie zaznaczono lub zaznaczone te same pole
 			if (!selected || (x === selected.x && y === selected.y)) 
 				return false;
 			
 			CONFIG::debug { trace('canMoveSelected '+selected.type+' (' + selected.x + ',' + selected.y + ') => (' + x + ',' + y + ')'); }
 			switch(selected.type) {
+				case "Pawn" :
+					var direction:int = (currentPlayer == WHITE ? 1 : -1);
+					
+					CONFIG::debug { trace('canMoveSelected Pawn 1'); }
+					var success:Boolean = false;
+					//walidacja
+					
+					//wykonano ruch do przodu
+					if (x == selected.x) {
+						CONFIG::debug { trace('canMoveSelected Pawn 2 ', 
+							y, selected.y + (2 * direction), 
+							selected.y + (1 * direction), 
+							isEmptyField(x, y)
+							); }
+						//wykonano ruch o jedno pole do przodu
+						//sprawdz czy nie ma pionka na polu
+						if ((y == selected.y + (1*direction)) && isEmptyField(x, y)) {
+							success = true;
+
+						//wykonano ruch o dwa pola do przodu
+						//sprawdz czy pionek jest w pierwszej linii, nie ma pionka na polach
+						}else if (y == selected.y + (2*direction) && (selected.y - direction) % 7 == 0 && isEmptyField(x, y) && isEmptyField(x, y-(1*direction))) {
+							//ustaw flage pominiecia pola
+							var ommitY:int = y - (1 * direction);
+							positions[x][ommitY].figureName = 'Ommit';
+							positions[x][ommitY].color = selected.color;
+							pawnOmmitField[currentPlayer] = { 'x' : x, 'y' : ommitY };
+							CONFIG::debug { trace('canMoveSelected Pawn 3 '); }
+							success = true;
+						}
+						
+					//wykonano bicie
+					}else if ((x == selected.x - 1 && x >= 0) || (x == selected.x + 1 && x < 8)) {
+							CONFIG::debug { trace('canMoveSelected Pawn 4 '+JSON.stringify(pawnOmmitField)); }
+						//sprawdz czy na polu jest figura przeciwnika
+						if (isEnemyFigure(x, y)) {
+							CONFIG::debug { trace('canMoveSelected Pawn 5 '+JSON.stringify(positions[x][y])); }
+							// jezeli jest tu flaga pominiecia pola - cofnij pionek ktory pominal pole
+							if (positions[x][y].figureName == 'Ommit') {
+								var ommitPawnY:int = y - direction;
+								positions[x][y].figureName = positions[x][ommitPawnY].figureName;
+								positions[x][ommitPawnY].figureName = null;
+								positions[x][ommitPawnY].color = null;
+								pawnOmmitField[getEnemyPlayer()] = null;
+							}
+							CONFIG::debug { trace('canMoveSelected Pawn 6 '+JSON.stringify(positions[x][y])); }
+							success = true;
+						}
+					}
+
+					//sprawdzenie awansu pionka
+					if (success && (y == 7 || y == 0)) {
+						positions[selected.x][selected.y].figureName = upgradeSelectedPawn();
+					}
+					CONFIG::debug { trace('canMoveSelected ' + success); }
+					return success;
 				case "King" : 
 					return (Math.abs(x - selected.x) <= 1 && Math.abs(y - selected.y) <= 1 );
 				case "Bishop" : 
@@ -283,18 +309,67 @@ package mouseeventsexample {
 			return false;
 		}
 		
+		private function getEnemyPlayer():String {
+			return (currentPlayer == WHITE ? BLACK : WHITE);
+		}
+
+		private function upgradeSelectedPawn():String {
+			var choosenFigure:String = 'Queen';
+			
+			var x:int = -1;
+			
+			switch(choosenFigure) {
+				case 'Queen': x = 3; break;
+			}
+			var y:int = (currentPlayer == WHITE ? 0 : 7);
+
+			var oldPawn:Mesh = scene.getChildByName(selected.figureName) as Mesh;
+			oldPawn.visible = false;
+			var mesh:Mesh = scene.getChildByName(choosenFigure + '_' + x + '_' + y) as Mesh;
+			var newFigure:Mesh = mesh.clone() as Mesh;
+			newFigure.name = choosenFigure +'_' + selected.figureName;
+			newFigure.x = oldPawn.x;
+			newFigure.y = oldPawn.y;
+			newFigure.z = oldPawn.z;
+			newFigure.visible = true;
+			
+			return newFigure.name;
+		}
+		
+		private function isEmptyField(x:int, y:int):Boolean {
+			return !positions[x][y].color;
+		}
+		
+		private function isEnemyFigure(x:int, y:int):Boolean {
+			return positions[x][y].color && positions[x][y].color != currentPlayer;
+		}
+		
+		private function isMyFigure(x:int, y:int):Boolean {
+			return positions[x][y].color && positions[x][y].color === currentPlayer;
+		}
+		
 		private function onBoardClick(e:MouseEvent3D):void {
 			var x:int = Math.round((e.localX - parseInt(config.values.mesh.x)) / config.values.pawnDistance);
 			var y:int = Math.round((e.localY - parseInt(config.values.mesh.y)) / config.values.pawnDistance);
 			CONFIG::debug { trace('onBoardClick (' + x + ',' + y + ')'); }
-			
-			if (positions[x][y].color) {
-				var figure:Mesh = scene.getChildByName(positions[x][y].figureName) as Mesh;
-				move(x, y, figure, positions[x][y].color);
+			onFigureClick(x, y);
+		}
+		
+		private function onFigureClick(x:int, y:int):void {
+			if (isMyFigure(x, y)) {
+				if (!isFrozen(x, y)) {
+					var figureName:String = positions[x][y].figureName;
+					selected = { 
+						'x' : x,
+						'y' : y,
+						'figureName' : figureName,
+						'type' : figureName.substr(0, figureName.search('_')),
+						'color' : currentPlayer
+					};
+				}
 			}else {
 				move(x, y);
 			}
-			
 		}
 
 		///////////////////////////////// FIGURES //////////////////////////////////////////
@@ -309,9 +384,7 @@ package mouseeventsexample {
 			loadQueens();
 			loadKings();
 			uploadResources(scene.getResources(true));
-
 			camera.render(stage3D);
-
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			stage.addEventListener(Event.RESIZE, onResize);
 			onResize();
@@ -327,16 +400,12 @@ package mouseeventsexample {
 			mesh.scaleX = config.values.mesh.scaleX;
 			mesh.scaleY = config.values.mesh.scaleY;
 			mesh.scaleZ = config.values.mesh.scaleZ;
-			//trace("INDICES", JSON.stringify(mesh.geometry.indices));
-			//trace("POSITION", JSON.stringify(mesh.geometry.getAttributeValues(VertexAttributes.POSITION)));
-			//trace("NORMAL", JSON.stringify(mesh.geometry.getAttributeValues(VertexAttributes.NORMAL)));
-			//trace("TEXCOORDS", JSON.stringify(mesh.geometry.getAttributeValues(VertexAttributes.TEXCOORDS[0])));
 
 			mesh.geometry.upload(stage3D.context3D);
 			var whiteMesh:Mesh = mesh as Mesh;
 			var blackMesh:Mesh = mesh.clone() as Mesh;
-			whiteMesh.setMaterialToAllSurfaces(coloredStandardMaterial());//new FillMaterial(0xFBF2ED));
-			blackMesh.setMaterialToAllSurfaces(coloredStandardMaterial());//new FillMaterial(0x000000));
+			whiteMesh.setMaterialToAllSurfaces(coloredStandardMaterial(0xFBF2ED));//new FillMaterial(0xFBF2ED));
+			blackMesh.setMaterialToAllSurfaces(coloredStandardMaterial(0x000000));//new FillMaterial(0x000000));
 			uploadResources(mesh.getResources(false, Geometry));
 			for each(var coordWhite:Array in data.white) {
 				var whiteFigure:Object3D = whiteMesh.clone();
@@ -346,6 +415,7 @@ package mouseeventsexample {
 				positions[coordWhite[0]][coordWhite[1]].figureName = whiteFigure.name;
 				positions[coordWhite[0]][coordWhite[1]].color = WHITE;
 				scene.addChild(whiteFigure);
+				uploadResources(whiteFigure.getResources(false));
 				whiteFigure.addEventListener(MouseEvent3D.MOUSE_UP, onWhiteClick);
 			}
 			for each(var coordBlack:Array in data.black) {
@@ -356,8 +426,10 @@ package mouseeventsexample {
 				positions[coordBlack[0]][coordBlack[1]].figureName = blackFigure.name;
 				positions[coordBlack[0]][coordBlack[1]].color = BLACK;
 				scene.addChild(blackFigure);
+				uploadResources(blackFigure.getResources(false));
 				blackFigure.addEventListener(MouseEvent3D.MOUSE_UP, onBlackClick);
 			}
+			//uploadResources(scene.getResources(true));
 		}
 		
 		private function loadQueens():void {
@@ -473,7 +545,7 @@ package mouseeventsexample {
 		private function onResourceLoaded(e:Event):Mesh {
 			var parser:ParserA3D = new ParserA3D();
 			parser.parse((e.target as URLLoader).data);
-			trace(parser.objects);
+			//trace(parser.objects);
 			for each (var obj:Object3D in parser.objects) {
 				if (obj.name == "Sphere") {
 					return obj as Mesh;
@@ -509,20 +581,16 @@ package mouseeventsexample {
 			var figure:Mesh = (e.target as Mesh);
 			var x:int = Math.round((figure.x - parseInt(config.values.mesh.x)) / config.values.pawnDistance);
 			var y:int = Math.round((figure.y - parseInt(config.values.mesh.y)) / config.values.pawnDistance);
-			CONFIG::debug {
-				trace('onPawnClick (' + x + ',' + y + ') (' + figure.x + ',' + figure.y + ')'+JSON.stringify(positions));
-			}
-			move(x, y, figure, WHITE);
+			CONFIG::debug { trace('onPawnClick (' + x + ',' + y + ') (' + figure.x + ',' + figure.y + ')'+JSON.stringify(positions)); }
+			onFigureClick(x, y);
 		}
 		
 		private function onBlackClick(e:Event):void {
 			var figure:Mesh = (e.target as Mesh);
 			var x:int = Math.round((figure.x - parseInt(config.values.mesh.x)) / config.values.pawnDistance);
 			var y:int = Math.round((figure.y - parseInt(config.values.mesh.y)) / config.values.pawnDistance);
-			CONFIG::debug {
-				trace('onBlackClick (' + x + ',' + y + ') (' + figure.x + ',' + figure.y + ')');
-			}
-			move(x, y, figure, BLACK);
+			CONFIG::debug { trace('onBlackClick (' + x + ',' + y + ') (' + figure.x + ',' + figure.y + ')'); }
+			onFigureClick(x, y);
 		}
 		
 		private function initPositionArray():void {
