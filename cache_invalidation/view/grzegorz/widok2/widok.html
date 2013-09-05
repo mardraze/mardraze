@@ -1,0 +1,57 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>bez nazwy</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 0.20" />
+	<link href="style.css" rel="stylesheet" type="text/css" /> 
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script src="funkcje.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		google.load("visualization", "1", {packages:["corechart"]});
+	
+		var mojeZadanie;
+		var procent=1;
+		var inwalidacja=0;
+	
+	</script>
+</head>
+
+<body>
+	<div align="center">
+		
+		<h1>Projekt KSR</h1>
+		
+		<table>	
+			<tr>
+				<td>Procent zapytań typu "SELECT"</td>
+				<td>Rodzaj Inwalidacji</td>
+			</tr>	
+			<tr>
+				<td>
+					<input type="radio" name="procent" value="1" checked="checked" onchange="test(this.value);"/>1%
+					<input type="radio" name="procent" value="10" onchange="test(this.value);"/>10%
+					<input type="radio" name="procent" value="30" onchange="test(this.value);"/>30%
+				</td>
+				<td>
+					<input type="radio" name="inwalidacja" value="0" checked="checked" onchange="test2(this.value);"/>Brak
+					<input type="radio" name="inwalidacja" value="1" onchange="test2(this.value);"/>Usuń wszystko
+					<input type="radio" name="inwalidacja" value="2" onchange="test2(this.value);"/>Algorytm
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="button" name="Button1" value="Wykonaj test" onclick="wykonajZapytanie()">
+				</td>
+			</tr>
+		</table>
+
+	
+	</div>
+</body>
+
+</html>

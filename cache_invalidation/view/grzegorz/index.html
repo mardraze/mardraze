@@ -1,0 +1,67 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>Projekt KSR</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<link href="style.css" rel="stylesheet" type="text/css" /> 
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="jquery-1.8.1.min.js"></script>
+	<script type="text/javascript" src="funkcje.js"></script>
+</head>
+	<body>
+		<div align="center">
+		<div id="naglowek">
+		<p class="tytul">		
+			Kompomentowe systemy rozproszone
+		</p>
+		<p>
+			Demonstracja uzycia MemCached + zaawansowany scenariusz odświerzania/inwalidacji cache-a.
+		</p>
+		</div>
+		
+		<div id="formularz">
+			<div id="op">Formularz generowania wykresów</div>
+			<form id="requestParamsForm" action="#">
+				<table id="fortable">
+					<tr>
+						<td>Wykorzystane podejście inwalidacji cache</td>
+						<td>
+							<select name="cache_mode">
+								<option value="2">Zaawansowany algorytm inwalidacji</option>
+								<option value="1">Usuń wszystko z cache</option>
+								<option value="0">Brak cache</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Procentowa ilość zapytań modyfikujących bazę</td>
+						<td>
+							<select name="write_query_percent">
+								<option>0</option>
+								<option>1</option>
+								<option>10</option>
+								<option>30</option>
+							</select>%
+						</td>
+					</tr>
+					<tr class="przyciski">
+						<td>
+							<input type="button" value="Generuj wykres" onclick="ChartGenerator.makeChart(); return false;"/>
+						</td>
+						<td>
+							<input type="button" value="Usuń wykresy" onclick="ChartGenerator.clearChart(); return false;"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div id="loading"><img src="32.gif" alt="" /></div>
+		<div id="chartContainer"></div>
+
+	</body>
+
+</html>

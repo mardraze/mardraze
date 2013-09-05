@@ -1,0 +1,98 @@
+html, body{
+	margin: 0;
+	padding: 0px 0px 0px 0px;
+	background-color: #4db3f4;
+
+}
+
+#naglowek {
+	width: 800px;
+	background-color: #ffffff;
+	border-style: solid;
+	border-color: #096dac;
+	border-radius: 10px;
+	margin-top: 20px;
+	margin-bottom: 13px;
+	padding-top:15px;
+	padding-bottom:15px;
+}
+
+#formularz {
+	width: 800px;
+	background-color: #ffffff;
+	border-style: solid;
+	border-color: #096dac;
+	border-radius: 10px;
+	margin-top: 20px;
+	margin-bottom: 13px;
+	padding-top:15px;
+	padding-bottom:15px;
+}
+
+
+
+#formularz td {
+	padding-top:7px;
+	padding-bottom:7px;
+	padding-right:7px;
+}
+
+.przyciski {
+
+	text-align: center;
+}
+
+.wykres {
+	width: 1200px; 
+	background-color: #ffffff;
+	border-style: solid;
+	border-color: #096dac;
+	border-radius: 10px;
+	margin-top: 20px;
+	margin-bottom: 13px;
+	padding-top: 7px;
+	padding-bottom: 20px;
+}
+
+.wykresc {
+	width: 1100px; 
+	height: 500px;
+
+}
+
+#op{
+	font-size: 25px;
+	color: #096dac;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.tytul{
+	font-size: 25px;
+	color: #096dac;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#loading{
+	width: 80px;
+	padding: 5px 5px 5px 5px;
+	background-color: #ffffff;
+	border-style: solid;
+	border-color: #096dac;
+	border-radius: 10px;
+}
+
+.tables{
+	width:800px;
+}
+
+.tables tr{
+	padding-top:15px;
+}
+
+.wyrs{
+	width: 200px;
+	font-size: 20px;
+	color: #096dac;
+}

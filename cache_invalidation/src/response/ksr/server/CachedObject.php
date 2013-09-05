@@ -19,13 +19,18 @@ class CachedObject extends GenericObject{
 	}
 
 	public function get($where, $fields = null) {
-		$from_cache = true;
-		$cacheKey = $this->getCacheKey($where);
-		$data = $this->cache->get($cacheKey);
-		if($data === false){
-			$from_cache = false;
+		$from_cache = false;
+		if($this->cache){
+			$cacheKey = $this->getCacheKey($where);
+			$data = $this->cache->get($cacheKey);
+			if($data === false){
+				$data = parent::get($where, $fields);
+				$this->cache->set($cacheKey, $data);
+			}else{
+				$from_cache = true;
+			}
+		}else{
 			$data = parent::get($where, $fields);
-			$this->cache->set($cacheKey, $data);
 		}
 		return array('data' => $data, 'from_cache' => $from_cache);
 	}
@@ -64,6 +69,7 @@ class CachedObject extends GenericObject{
 				}
 			}
 		}
+		unset($parser);
 		return $baseVector;
 	}
 	
@@ -94,20 +100,12 @@ class CachedObject extends GenericObject{
 		}
 		return '['.implode(',', $bigRevision).']';
 	}
-	
 	public function delete($where) {
 		$result = parent::delete($where);
 		if($result){
-			$whereString = ($where ? implode(' AND ', $where) : '');
-			$this->updateCacheRevision($whereString);
+			$this->updateCacheRevision($where);
 		}
 		return $result;
-	}
-
-	private function updateCacheRevision($whereString){
-		$baseVector = $this->getBaseVectorFromQuery($whereString, $this->table);
-		$vectors = $this->makeChildVectors($baseVector, 0);
-		$this->revisionCache->inc($vectors);
 	}
 	
 	public function insert($set){
@@ -126,15 +124,31 @@ class CachedObject extends GenericObject{
 	public function update($set, $where = null){
 		$result = parent::update($set, $where);
 		if($result){
-			$arr = array();
-			foreach ($set as $k => $v){
-				$arr []= "`$k`='$v'";
-			}
-			$setString = implode(' AND ', $arr);
-			$this->updateCacheRevision($setString);
-			$whereString = ($where ? implode(' AND ', $where) : '');
-			$this->updateCacheRevision($whereString);
+			$this->updateCacheRevisionBySet($set);
+			$this->updateCacheRevision($where);
+			unset($arr);
 		}
 		return $result;
 	}
+	
+
+	private function updateCacheRevision($whereString){
+		if($this->revisionCache){
+			$baseVector = $this->getBaseVectorFromQuery($whereString, $this->table);
+			$vectors = $this->makeChildVectors($baseVector, 0);
+			$this->revisionCache->inc($vectors);
+			unset($baseVector);
+			unset($vectors);
+		}
+	}
+	
+	private function updateCacheRevisionBySet($set){
+		$arr = array();
+		foreach ($set as $k => $v){
+			$arr []= "`$k`='$v'";
+		}
+		$setString = implode(' AND ', $arr);
+		$this->updateCacheRevision($setString);
+	}
+
 }

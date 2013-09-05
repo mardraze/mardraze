@@ -1,11 +1,64 @@
 <?php
 
 require_once dirname(__FILE__).'/ksr/Server.php';
-require_once dirname(__FILE__).'/ksr/lib/PHP-SQL-Parser/php-sql-parser.php';
-
+require_once dirname(__FILE__).'/ksr/PerformanceTest.php';
 
 class Ksr extends Response {
 
+	
+	/////////////////////////////////////////// Performance test - multiple query  ///////////////////
+	
+	public function executePerformanceTest(){
+		$start = microtime(true);
+		$configuration = $this->overwriteConfigurationFromRequest();
+		$servers = $this->initServers($configuration);
+		$testType = $configuration['test_type'];
+		$pt = new PerformanceTest($servers, $configuration);
+		$this->content = array(
+			'result' => $pt->$testType(),
+			'execution_time' => microtime(true)-$start,
+		);
+	}
+	
+	private function initServers($configuration){
+		$cacheMode = $configuration['cache_mode'];
+		$memcachedPortStart = $configuration['memcached_port_start'];
+		$memcachedCount = $configuration['memcached_count'];
+		$servers = new stdClass();
+		for($i=0; $i<$memcachedCount; $i++){
+			$server = new Server();
+			switch ($cacheMode){
+				//zaawansowany algorytm inwalidacji
+				case CACHE_MODE_ADVANCED : $server->initCache($memcachedPortStart + $i); break;
+				default:
+			}
+			$key = 'server'.$i;
+			$servers->$key = $server;
+		}
+		return $servers;
+	}
+	
+	private function overwriteConfigurationFromRequest(){
+		global $config;
+		$configParameters = array();
+		foreach ($config['DEFAULT'] as $key => $value){
+			if(array_key_exists($key, $_REQUEST)){
+				$configParameters[$key] = $_REQUEST[$key];
+			}else{
+				$configParameters[$key] = $value;
+			}
+		}
+		return $configParameters;
+	}
+	
+	
+	
+	
+	
+	
+	
+	//////////////////////////////////////// One query test ///////////////////////////////////////////////
+	
 	public function executeUpdate(){
 		$this->requestQueryShouldHaveKeys('table', 'set');
 		$server = $this->initServer();
@@ -33,8 +86,10 @@ class Ksr extends Response {
 	private function initServer(){
 		$port = @$_REQUEST['port'];
 		if($port > 10000){
-			return new Server($port);
-		}else{
+			$server = new Server();
+			$server->initCache($port);
+			return $server;
+		} else {
 			throw new Exception('GET[port] => "'.$port.'" is wrong, may be > 10000');
 		}
 	}

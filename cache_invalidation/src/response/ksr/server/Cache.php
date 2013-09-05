@@ -36,6 +36,9 @@ class Cache {
 		throw new Exception($msg, Response::BADREQUEST);
 	}
 	
-	
-	
+	function __destruct(){
+		$this->memcache->close();
+		unset($this->memcache);
+	}
+
 }

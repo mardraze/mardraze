@@ -1,0 +1,18 @@
+html, body{
+	margin: 0;
+	padding: 0px 0px 0px 0px;
+	background-color: #87f78b;
+
+}
+table{
+	width: 800px;
+	text-align: center;
+	background-color: #ffffff;
+	border-style: solid;
+	border-color: #1a7b1e;
+	border-radius: 10px;
+	margin-top: 20px;
+	margin-bottom: 13px;
+	padding-top:15px;
+	padding-bottom:15px;
+}

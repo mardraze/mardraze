@@ -1,0 +1,131 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<style>
+		.poleinformacji{
+			width: 400px;
+			height: 50px;
+			background-color:#ffffff;
+			border:2px solid #000000;
+			line-height: 2.5em;
+		}
+	</style>
+	<title>bez nazwy</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="jquery-1.8.1.min.js"></script>
+	<script type="text/javascript">
+		google.load("visualization", "1", {packages:["corechart"]});
+		var ChartGenerator = {
+			
+			//private
+			_ : {
+				//output div
+				chartContainerId : '',
+				
+				//form with request params
+				requestParamsFormId : '',
+
+				//server address
+				baseUrl : 'http://localhost/mardraze/cache_invalidation/web/ksr/performanceTest',
+				
+				nextChartID : 0,
+				
+				drawChart : function(dataArray) {
+					console.log(this);
+					var data = google.visualization.arrayToDataTable(dataArray);
+					var options = {
+					  title: 'Company Performance',
+					  hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+					  vAxis: {minValue: 0}
+					};
+					var newChartId = 'chart_div'+(_this._.nextChartID++);
+					$('#'+_this._.requestParamsFormId).append('<div id="'+newChartId+'" style="width: 1200px; height: 500px;"></div>');
+					var chart = new google.visualization.AreaChart(document.getElementById(newChartId));
+					chart.draw(data, options);
+					_this.onResponseReady();
+				},
+			},
+			init : function(requestParamsFormId, chartContainerId){
+				//this object
+				_this = ChartGenerator;
+				_this._.chartContainerId = chartContainerId;
+				_this._.requestParamsFormId = requestParamsFormId;
+			},
+
+			makeChart : function (){
+				var url = _baseUrl + '?' + $(_requestParamsFormId).serialize();
+				var jsData = {
+					'jakies': 1,
+					'twoje': 1,
+					'parametry': 1
+				};
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: url,
+					success: function(responseData){
+						_this._.drawChart(jsData, responseData);
+					}
+				});
+			},
+		};
+		
+		ChartGenerator.init('requestParamsForm','chartContainer');
+		ChartGenerator.onResponseReady = function(){
+			$('#chartHeader').show();
+		};
+
+	</script>
+</head>
+	<body>
+		<div align="center">	
+		<h1>Ajax</h1>
+		<p align="center">
+		blabla
+		</p>
+		
+		<div>Formularz generowania wykresów</div>
+		<div>
+			<form id="requestParamsForm" action="#">
+				<table>
+					<tr>
+						<td>Wykorzystane podejście inwalidacji cache</td>
+						<td>
+							<select name="caching">
+								<option value="2">Zaawansowany algorytm inwalidacji</option>
+								<option value="1">Usuń wszystko z cache</option>
+								<option value="0">Brak cache</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Procentowa ilość zapytań modyfikujących bazę</td>
+						<td>
+							<select name="write_query_percent">
+								<option>0</option>
+								<option>1</option>
+								<option>10</option>
+								<option>30</option>
+							</select>%
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input type="button" value="Generuj wykres" onclick="ChartGenerator.makeChart(); return false;"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div id="chartHeader" style="display: none;">Wykresy</div>
+		<div id="chartContainer"></div>
+
+	</body>
+
+</html>

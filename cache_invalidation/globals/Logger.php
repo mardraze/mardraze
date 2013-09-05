@@ -14,6 +14,13 @@ class Logger{
 		self::write('[DEBUG] '.$msg, -1);
 	}
 	
+	public static function memoryUsage(){
+		$msg = memory_get_usage();
+		$backtrace = debug_backtrace();
+		$place = $backtrace[0]['file'].':'.$backtrace[0]['line'];
+		self::write('[MEMORY] '.$msg.'  => '.$place, -1);
+	}
+
 	private static function write($msg, $level){
 		global $config;
 		if($config['LOG_LEVEL'] & $level){

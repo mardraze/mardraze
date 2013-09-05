@@ -17,11 +17,10 @@ class RestRouting{
 	}
 	
 	private function callMethodOfClass($className, $method, $uri){
-		$r = new ReflectionClass($className);
-		$objInstance = $r->newInstanceArgs(array());
+		$objInstance = new $className;
 		$objInstance->initRequest($uri);
 		$objInstance->preExecute();
-		call_user_func(array($objInstance, $method));
+		$objInstance->$method();
 		$objInstance->postExecute();
 		return $objInstance->getResult();
 	}

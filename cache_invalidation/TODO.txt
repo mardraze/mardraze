@@ -6,19 +6,18 @@ np jeśli mamy 2 klucze brane pod uwagę podczas invalidacji
 i zapytanie 
 SELECT song_id FROM songs WHERE author_id = 3
 to mamy dwa wektory 
-(*, 3) - bazowy oraz (*, ?)
-(*, ?): Oznacza to że wektor zostanie wyrzucony z cache jeśli
+(*, 3) - bazowy oraz (*, *)
 będzie zapytanie np DELETE FROM songs WHERE author_id < 100
 
 Jeśli mamy wektor bazowy (7, 3) to zostanie wygenerowane dodatkowe 
-3 wektory (?, 3), (7, ?), (?, ?)
+3 wektory (*, 3), (7, *), (*, *)
 
 następnie pobieramy numery rewizji z globalnego cache 
 zawierającego rewizje dla każdego wektora.
 
 potem łączymy wszystkie rewizje w jedną dużą rewizję.
 np jeśli mamy wektory 
-[(7, 3), (?, 3), (7, ?), (?, ?)]
+[(7, 3), (*, 3), (7, *), (*, *)]
 to otrzymujemy dużą rewizję np 123.3.114.14
 
 DELETE, INSERT
@@ -30,9 +29,7 @@ INSERT INTO songs SET author_id = 3
 
 to mamy wektor bazowy (*, 3) 
 który implikuje pozostałe trzy i w efekcie mamy:
-(*, 3), (?, 3), (*, *), (?, *)
+(*, 3), (*, *)
 Wykonujemy zapytanie, po czym zwiększamy rewizję każdego wektora
 UPDATE = DELETE + INSERT
 
-http://localhost/mardraze/cache_invalidation/web/ksr/select?port=11234&query[table]=songs&query[where]=author_id=3
-http://localhost/mardraze/cache_invalidation/web/ksr/update?port=11234&query[table]=songs&query[set][author_id]=2&query[where]=author_id=3

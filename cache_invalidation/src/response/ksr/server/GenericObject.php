@@ -20,6 +20,7 @@ class GenericObject {
 		while($row = mysql_fetch_assoc($result)){
 			$data[] = $row;
 		}
+		mysql_free_result($result);
 		return $data;
 	}
 

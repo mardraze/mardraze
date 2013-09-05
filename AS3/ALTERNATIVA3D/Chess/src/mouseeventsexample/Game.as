@@ -56,34 +56,16 @@ package mouseeventsexample {
 
 	public class Game extends Sprite {
 		
-		[Embed(source="texture.jpg")] static private const EmbedTexture:Class;
-		[Embed(source="ChessBoard.jpg")] static private const ChessBoardEmbed:Class;
-
-		[Embed(source="C:\\Users\\Marcin\\blender\\pawel\\wieza.a3d", mimeType="application/octet-stream")]
-		private static const bumpClass:Class;
-
+		[Embed(source = "ChessBoard.jpg")] 
+		static private const ChessBoardEmbed:Class;
 		static public const WHITE:String = "white";
 		static public const BLACK:String = "black";
-
 		private var scene:Object3D = new Object3D();
-		
 		private var camera:Camera3D;
 		private var controller:SimpleObjectController;
-		
 		private var stage3D:Stage3D;
-		private var error:Sprite3D;
-		private var PAWN_DISTANCE:uint = 50;
-		private var pawns:Object3D;
-		private var mesh:Mesh;
 		private var config:Config;
-		private static var UNDEFINED:int = -1000000;
-		private var tmpCameraX:Number = UNDEFINED;
-		private var tmpCameraY:Number = UNDEFINED;
-		private var tmpCameraZ:Number = UNDEFINED;
-		private var tmpCameraRotationX:Number;
-		private var tmpCameraRotationY:Number;
-		private var tmpCameraRotationZ:Number;
-		private var directionalLight:DirectionalLight;
+		private var cameraPosition:Object = {};
 		private var positions:Array;
 		private var selected:Object;
 		private var currentPlayer:String;
@@ -98,26 +80,28 @@ package mouseeventsexample {
 			addChild(camera.view);
 			addChild(camera.diagram);
 			scene.addChild(camera);
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
-				if (e.keyCode == 80) {
-					trace(camera.x, camera.y, camera.z,
-						camera.rotationX / (Math.PI / 180),
-						camera.rotationY / (Math.PI / 180), 
-						camera.rotationZ / (Math.PI/180));
-				}
-			});
+			CONFIG::debug {
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
+					if (e.keyCode == 80) {
+						trace(camera.x, camera.y, camera.z,
+							camera.rotationX / (Math.PI / 180),
+							camera.rotationY / (Math.PI / 180), 
+							camera.rotationZ / (Math.PI / 180));
+					}
+				});
+			}
 			initPositionArray();
 			loadBoard();
 
 			config = new Config();
 			config.ready(function():void {
-				if (tmpCameraX !== UNDEFINED) {
-					camera.x = tmpCameraX;
-					camera.y = tmpCameraY;
-					camera.z = tmpCameraZ;
-					camera.rotationX = tmpCameraRotationX;
-					camera.rotationY = tmpCameraRotationY;
-					camera.rotationZ = tmpCameraRotationZ;
+				if (x in cameraPosition) {
+					camera.x = cameraPosition.x;
+					camera.y = cameraPosition.y;
+					camera.z = cameraPosition.z;
+					camera.rotationX = cameraPosition.rotationX;
+					camera.rotationY = cameraPosition.rotationY;
+					camera.rotationZ = cameraPosition.rotationZ;
 				}else {
 					camera.x = config.values.camera.x;
 					camera.y = config.values.camera.y;
@@ -355,7 +339,11 @@ package mouseeventsexample {
 			onFigureClick(x, y);
 		}
 		
-		private function onFigureClick(x:int, y:int):void {
+		private function onFigureClick(e:MouseEvent3D):void {
+			var figure:Mesh = (e.target as Mesh);
+			var x:int = Math.round((figure.x - parseInt(config.values.mesh.x)) / config.values.pawnDistance);
+			var y:int = Math.round((figure.y - parseInt(config.values.mesh.y)) / config.values.pawnDistance);
+
 			if (isMyFigure(x, y)) {
 				if (!isFrozen(x, y)) {
 					var figureName:String = positions[x][y].figureName;
@@ -416,7 +404,14 @@ package mouseeventsexample {
 				positions[coordWhite[0]][coordWhite[1]].color = WHITE;
 				scene.addChild(whiteFigure);
 				uploadResources(whiteFigure.getResources(false));
-				whiteFigure.addEventListener(MouseEvent3D.MOUSE_UP, onWhiteClick);
+				whiteFigure.addEventListener(MouseEvent3D.MOUSE_UP, function(e:MouseEvent3D) {
+					var figure:Mesh = (e.target as Mesh);
+					var x:int = Math.round((figure.x - parseInt(config.values.mesh.x)) / config.values.pawnDistance);
+					var y:int = Math.round((figure.y - parseInt(config.values.mesh.y)) / config.values.pawnDistance);
+					CONFIG::debug { trace('onPawnClick (' + x + ',' + y + ') (' + figure.x + ',' + figure.y + ')'+JSON.stringify(positions)); }
+					onFigureClick(x, y);
+
+				});
 			}
 			for each(var coordBlack:Array in data.black) {
 				var blackFigure:Object3D = blackMesh.clone();
@@ -427,7 +422,7 @@ package mouseeventsexample {
 				positions[coordBlack[0]][coordBlack[1]].color = BLACK;
 				scene.addChild(blackFigure);
 				uploadResources(blackFigure.getResources(false));
-				blackFigure.addEventListener(MouseEvent3D.MOUSE_UP, onBlackClick);
+				blackFigure.addEventListener(MouseEvent3D.MOUSE_UP, onFigureClick);
 			}
 			//uploadResources(scene.getResources(true));
 		}
@@ -568,29 +563,13 @@ package mouseeventsexample {
 		}
 		
 		private function reloadConfig():void {
-			tmpCameraX = camera.x;
-			tmpCameraY = camera.y;
-			tmpCameraZ = camera.z;
-			tmpCameraRotationX = camera.rotationX;
-			tmpCameraRotationY = camera.rotationY;
-			tmpCameraRotationZ = camera.rotationZ;
+			cameraPosition.x = camera.x;
+			cameraPosition.y = camera.y;
+			cameraPosition.z = camera.z;
+			cameraPosition.rotationX = camera.rotationX;
+			cameraPosition.rotationY = camera.rotationY;
+			cameraPosition.rotationZ = camera.rotationZ;
 			config.reload();
-		}
-		
-		private function onWhiteClick(e:Event):void {
-			var figure:Mesh = (e.target as Mesh);
-			var x:int = Math.round((figure.x - parseInt(config.values.mesh.x)) / config.values.pawnDistance);
-			var y:int = Math.round((figure.y - parseInt(config.values.mesh.y)) / config.values.pawnDistance);
-			CONFIG::debug { trace('onPawnClick (' + x + ',' + y + ') (' + figure.x + ',' + figure.y + ')'+JSON.stringify(positions)); }
-			onFigureClick(x, y);
-		}
-		
-		private function onBlackClick(e:Event):void {
-			var figure:Mesh = (e.target as Mesh);
-			var x:int = Math.round((figure.x - parseInt(config.values.mesh.x)) / config.values.pawnDistance);
-			var y:int = Math.round((figure.y - parseInt(config.values.mesh.y)) / config.values.pawnDistance);
-			CONFIG::debug { trace('onBlackClick (' + x + ',' + y + ') (' + figure.x + ',' + figure.y + ')'); }
-			onFigureClick(x, y);
 		}
 		
 		private function initPositionArray():void {
