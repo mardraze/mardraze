@@ -1,1 +1,2 @@
-2013-09-05 20:41:07 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\CachedObject.php[102]: implode() [<a href='function.implode'>function.implode</a>]: Invalid arguments passed
+2013-09-06 09:40:01 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\GenericObject.php[46]: Invalid argument supplied for foreach()
+2013-09-06 09:43:12 [ERROR] C:\Users\Marcin\mardraze\cache_invalidation\src\response\ksr\server\GenericObject.php[59]: Invalid argument supplied for foreach()

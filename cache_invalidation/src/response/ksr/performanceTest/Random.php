@@ -21,12 +21,12 @@ class Random {
 		if(!@$config['cache_keys_of_table'][$table]) throw new Exception('TABLE MUST BE SET IN $config[cache_keys_of_table]');
 		$set = array();
 		foreach ($config['cache_keys_of_table'][$table] as $k => $property){
-			$set[$property] = $this->getRandomValue();
+			$set[$property] = $this->getRandomValue2();
 		}
 		return $set;
 	}
 	
-	public function paramWhere($table, $minKeysCount = null){
+	public function paramWhere($table, $minKeysCount = null, $asArray = true){
 		global $config;
 		if(!@$config['cache_keys_of_table'][$table]) throw new Exception('TABLE MUST BE SET IN $config[cache_keys_of_table]');
 		if(!$minKeysCount){
@@ -39,16 +39,25 @@ class Random {
 			foreach ($config['cache_keys_of_table'][$table] as $k => $property){
 				if($this->haveChance()){
 					$keysCount++;
-					$where[] = '`'.$property.'`="'.$this->getRandomValue().'"';
+					if($asArray){
+						$where[$property] = ''.$this->getRandomValue2().'';
+					}else{
+						$where[] = '`'.$property.'`='.$this->getRandomValue2().'';
+					}
 				}
 			}
 		}
-		return implode(' AND ', $where);
+		return ($asArray ? $where : (implode(' AND ', $where))); 
 	}
 	
 	private function getRandomValue(){
 		$rand = rand();
 		return ($rand%100)+1;
+	}
+
+	private function getRandomValue2(){
+		$rand = rand();
+		return ($rand%2)+1;
 	}
 	
 	private function haveChance(){

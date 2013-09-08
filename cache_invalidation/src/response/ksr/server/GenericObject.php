@@ -14,6 +14,7 @@ class GenericObject {
 	}
 	
 	public function get($where, $fields = null) {
+		$where = $this->kvArray2String($where);
 		$query = 'SELECT '.($fields ? $fields : '*').' FROM '.$this->table.($where ? (' WHERE '.$where) : '');
 		$result = $this->execute($query);
 		$data = array();
@@ -25,6 +26,7 @@ class GenericObject {
 	}
 
 	public function delete($where) {
+		$where = $this->kvArray2String($where);
 		$query = 'DELETE FROM '.$this->table.($where ? (' WHERE '.$where) : '');
 		$this->execute($query);
 		return mysql_affected_rows();
@@ -32,21 +34,15 @@ class GenericObject {
 
 
 	protected function insert($data){
-		$set = array();
-		foreach($data as $k => $v){
-			$set[] = '`'.$k.'`="'.$v.'"';
-		}
-		$query = 'INSERT INTO '.$this->table.' SET '.implode(',', $set);
+		$set = $this->kvArray2String($data, ',');
+		$query = 'INSERT INTO '.$this->table.' SET '. $set;
 		$this->execute($query);
 		return mysql_insert_id();
 	}
 	
 	protected function update($data, $where){
-		$set = array();
-		foreach($data as $k => $v){
-			$set[] = '`'.$k.'`="'.$v.'"';
-		}
-		$query = 'UPDATE '.$this->table.' SET '.implode(',', $set).($where ? (' WHERE '.$where) : '');
+		$set = $this->kvArray2String($data, ',');
+		$query = 'UPDATE '.$this->table.' SET '. $set .($where ? (' WHERE '.$where) : '');
 		$this->execute($query);
 		return mysql_affected_rows();
 	}
@@ -59,5 +55,21 @@ class GenericObject {
 	protected function error($query){
 		die($query);
 	}
-
+	
+	private function kvArray2String($array, $glue = null){
+		if(is_array($array)){
+			if(!$glue){
+				$glue = ' AND ';
+			}
+			$arr = array();
+			foreach ($array as $k => $v){
+				$arr []= "`$k`=$v";
+			}
+			$arrString = implode($glue, $arr);
+			unset($arr);
+			return $arrString;
+		}else{
+			return $array;
+		}
+	}
 }

@@ -19,7 +19,7 @@
 			Kompomentowe systemy rozproszone
 		</p>
 		<p>
-			Demonstracja uzycia MemCached + zaawansowany scenariusz odświerzania/inwalidacji cache-a.
+			Demonstracja uzycia MemCached + zaawansowany scenariusz odświeżania/inwalidacji cache-a.
 		</p>
 		</div>
 		
@@ -32,7 +32,7 @@
 						<td>
 							<select name="cache_mode">
 								<option value="2">Zaawansowany algorytm inwalidacji</option>
-								<option value="1">Usuń wszystko z cache</option>
+								<!-- >option value="1">Usuń wszystko z cache</option -->
 								<option value="0">Brak cache</option>
 							</select>
 						</td>
@@ -40,7 +40,7 @@
 					<tr>
 						<td>Procentowa ilość zapytań modyfikujących bazę</td>
 						<td>
-							<select name="write_query_percent">
+							<select name="write_query_chance">
 								<option>0</option>
 								<option>1</option>
 								<option>10</option>

@@ -26,8 +26,8 @@ $config['DEFAULT'] = array(
 		'have_chance_percent' => 40, //Random chance for key
 		//'test_type' => 'howMuchDataFromCache',
 		'test_type' => 'queryDetails', //PerformanceTest method name 
-		'write_queries_to_log' => 0, //without select data
-		'write_results_to_log' => 0, //huge select data
+		'write_queries_to_log' => 1, //only queries without select data
+		'write_results_to_log' => 0, //warning - huge select data
 		'Random_whileMaxCount' => 10,//security - if someone don't have chance 
 );
 

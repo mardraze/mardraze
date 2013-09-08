@@ -29,7 +29,7 @@ class PerformanceTest {
 	public function howMuchDataFromCache(){
 		$data = array();
 		$data[] = array('Ilość wszystkich zapytań', 'Ilość zapytań pobranych z cache', 'Średni czas wykonania zapytania');
-		$queriesCount = array(1000);
+		$queriesCount = array(3);
 		$serverCount = $this->configuration['memcached_count'];
 		$log = array();
 		foreach ($queriesCount as $count){
@@ -62,7 +62,7 @@ class PerformanceTest {
 	public function queryDetails(){
 		$data = array();
 		$data[] = array('Lp', 'Select From Cache', 'Select From DB', 'Insert', 'Delete', 'Update');
-		$queriesCount = array(500);
+		$queriesCount = array(10);
 		$serverCount = $this->configuration['memcached_count'];
 		$log = array();
 		$queryType2Index = array(
@@ -77,13 +77,15 @@ class PerformanceTest {
 					$key = 'server'.$i;
 					$server = $this->servers->$key;
 					$result = $this->makeQueryAndGetResult($server);
+					$fromCache = false;
 					if(is_array($result['data']['result']) && array_key_exists('from_cache', $result['data']['result']) && $result['data']['result']['from_cache']){
 						$index = 1;
+						$fromCache = true;
 					}else{
 						$index = $queryType2Index[$result['query']['type']];
 					}
 					if($this->configuration['write_queries_to_log']){
-						$log[] = $this->makeLog($result);
+						$log[] = $this->makeLog($result, $fromCache);
 					}
 					if($this->configuration['write_results_to_log']){
 						$log[] = $result;
@@ -102,10 +104,10 @@ class PerformanceTest {
 		return $ret;
 	}
 	
-	private function makeLog($result){
-		array(
+	private function makeLog($result, $fromCache){
+		return array(
 				'query' => $result['query'],
-				'data' => $result['data']['execution_time'],
+				'time' => $result['data']['execution_time'],
 				'from_cache' => $fromCache,
 		);
 	}
@@ -143,7 +145,8 @@ class PerformanceTest {
 							'type' => 'delete',
 							'where' => $where
 					),
-					'data' => $server->delete($table, $where)
+				//	'data' => $server->delete($table, $where)
+					'data' => $server->update($table, $where, $where)
 				);
 				break;
 			case QUERY_TYPE_UPDATE :

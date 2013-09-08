@@ -13,7 +13,7 @@ class CachedObject extends GenericObject{
 	private $cache;
 	private $revisionCache;
 	
-	public function CachedObject(Cache $cache, Cache $revisionCache){
+	public function CachedObject(Cache $cache = null, Cache $revisionCache = null){
 		$this->cache = $cache;
 		$this->revisionCache = $revisionCache;
 	}
@@ -24,52 +24,68 @@ class CachedObject extends GenericObject{
 			$cacheKey = $this->getCacheKey($where);
 			$data = $this->cache->get($cacheKey);
 			if($data === false){
-				$data = parent::get($where, $fields);
+				$whereString = (is_array($where) ? $this->kvArray2String($where) : $where);
+				$data = parent::get($whereString, $fields);
 				$this->cache->set($cacheKey, $data);
 			}else{
 				$from_cache = true;
 			}
 		}else{
-			$data = parent::get($where, $fields);
+			$whereString = (is_array($where) ? $this->kvArray2String($where) : $where);
+			$data = parent::get($whereString, $fields);
 		}
 		return array('data' => $data, 'from_cache' => $from_cache);
 	}
 	
-	private function getCacheKey($whereString){
-		$baseVector = $this->getBaseVectorFromQuery($whereString, $this->table);
+	private function getCacheKey($where){
+		$baseVector = $this->getBaseVectorFromQuery($where, $this->table);
 		$vectors = $this->makeChildVectors($baseVector, 0);
 		return $this->table.$this->getBigRevision($vectors);
 	}
 
-	private function getBaseVectorFromQuery($whereString, $table){
+	private function getBaseVectorFromQuery($whereParam, $table){
 		global $config;
+		if(!array_key_exists($table, $config['cache_keys_of_table'])) 
+			throw new Exception('TABLE "'.$table.'" MUST BE IN config', 500);
 		$cacheKeys = @$config['cache_keys_of_table'][$table];
-		$parser = new PHPSQLParser('WHERE '.$whereString);
+
 		$result = array();
 		$baseVector = new Vector();
 		$baseVector->properties = array_fill(0, count($cacheKeys), Vector::ALL);
-		$where = $parser->parsed['WHERE'];
-		if($where){
+		$where = null;
+		if(is_array($whereParam)){
+			$where = $whereParam;
 			while(list($k, $v) = each($where)){
-				if($v['expr_type'] == 'colref'){
-					$cacheKeyIndex = array_search($v['base_expr'], $cacheKeys);
-					list($k, $operator) = each($where);
-					list($k, $value) = each($where);
-					if($cacheKeyIndex !== false){
-						if($operator['expr_type'] == 'operator'){
-							if($operator['base_expr'] == '=' && $value['expr_type'] == 'const'){
-								$baseVector->properties[$cacheKeyIndex] = $value['base_expr'];
+				$cacheKeyIndex = array_search($k, $cacheKeys);
+				if($cacheKeyIndex !== false){
+					$baseVector->properties[$cacheKeyIndex] = $v;
+				}
+			}
+		}else{
+			$parser = new PHPSQLParser('WHERE '.$whereParam);
+			$where = $parser->parsed['WHERE'];
+			unset($parser);
+			if($where){
+				while(list($k, $v) = each($where)){
+					if($v['expr_type'] == 'colref'){
+						$cacheKeyIndex = array_search($v['base_expr'], $cacheKeys);
+						list($k, $operator) = each($where);
+						list($k, $value) = each($where);
+						if($cacheKeyIndex !== false){
+							if($operator['expr_type'] == 'operator'){
+								if($operator['base_expr'] == '=' && $value['expr_type'] == 'const'){
+									$baseVector->properties[$cacheKeyIndex] = $value['base_expr'];
+								}
+							}else{
+								throw new Exception('QUERY ERROR '.$whereParam);
 							}
-						}else{
-							throw new Exception('QUERY ERROR '.$whereString);
 						}
+					}else if($v['expr_type'] != 'operator' || $v['base_expr'] != 'AND'){ //TODO => OR operator
+						throw new Exception('NO AND IN QUERY '.$whereParam);
 					}
-				}else if($v['expr_type'] != 'operator' || $v['base_expr'] != 'AND'){ //TODO => OR operator
-					throw new Exception('NO AND IN QUERY '.$whereString);
 				}
 			}
 		}
-		unset($parser);
 		return $baseVector;
 	}
 	
@@ -100,55 +116,50 @@ class CachedObject extends GenericObject{
 		}
 		return '['.implode(',', $bigRevision).']';
 	}
+
 	public function delete($where) {
-		$result = parent::delete($where);
+		$result = (is_array($where) ? (parent::delete($this->kvArray2String($where))) : parent::delete($where));
 		if($result){
 			$this->updateCacheRevision($where);
 		}
 		return $result;
 	}
-	
+
 	public function insert($set){
 		$result = parent::insert($set);
 		if($result){
-			$arr = array();
-			foreach ($set as $k => $v){
-				$arr []= "`$k`='$v'";
-			}
-			$setString = implode(' AND ', $arr);
-			$this->updateCacheRevision($setString);
+			$this->updateCacheRevision($set);
 		}
 		return $result;
 	}
-	
+
 	public function update($set, $where = null){
-		$result = parent::update($set, $where);
+		$result = (is_array($where) ? (parent::update($set, $this->kvArray2String($where))) : parent::update($set, $where));
 		if($result){
-			$this->updateCacheRevisionBySet($set);
+			$this->updateCacheRevision($set);
 			$this->updateCacheRevision($where);
 			unset($arr);
 		}
 		return $result;
 	}
-	
 
-	private function updateCacheRevision($whereString){
+	private function updateCacheRevision($whereParam){
 		if($this->revisionCache){
-			$baseVector = $this->getBaseVectorFromQuery($whereString, $this->table);
+			$baseVector = $this->getBaseVectorFromQuery($whereParam, $this->table);
 			$vectors = $this->makeChildVectors($baseVector, 0);
 			$this->revisionCache->inc($vectors);
 			unset($baseVector);
 			unset($vectors);
 		}
 	}
-	
-	private function updateCacheRevisionBySet($set){
-		$arr = array();
-		foreach ($set as $k => $v){
-			$arr []= "`$k`='$v'";
-		}
-		$setString = implode(' AND ', $arr);
-		$this->updateCacheRevision($setString);
-	}
 
+	private function kvArray2String($array){
+		$arr = array();
+		foreach ($array as $k => $v){
+			$arr []= "`$k`=$v";
+		}
+		$arrString = implode(' AND ', $arr);
+		unset($arr);
+		return $arrString;
+	}
 }
