@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2013-09-03'</value>
+      <value>'2013-09-10'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -40,10 +40,11 @@
       <path-element>C:\Users\Marcin\mardraze\AS3\ALTERNATIVA3D\Chess\lib\AlternativaProtocol-2.53.0.swc</path-element>
       <path-element>C:\Users\Marcin\mardraze\AS3\ALTERNATIVA3D\Chess\lib\OSGIBase.swc</path-element>
       <path-element>C:\Users\Marcin\mardraze\AS3\ALTERNATIVA3D\Chess\lib\A3DModelsBase-2.5.2.swc</path-element>
+      <path-element>C:\Users\Marcin\mardraze\AS3\ALTERNATIVA3D\Chess\lib\flexunit-4.1.0-8-as3_4.1.0.16076.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Marcin\mardraze\AS3\ALTERNATIVA3D\Chess\src\mouseeventsexample\Game.as</path-element>
+    <path-element>C:\Users\Marcin\mardraze\AS3\ALTERNATIVA3D\Chess\src\test\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
