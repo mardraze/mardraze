@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2013-09-10'</value>
+      <value>'2013-09-11'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -44,7 +44,7 @@
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Marcin\mardraze\AS3\ALTERNATIVA3D\Chess\src\test\Main.as</path-element>
+    <path-element>C:\Users\Marcin\mardraze\AS3\ALTERNATIVA3D\Chess\src\pl\mardraze\Game.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
